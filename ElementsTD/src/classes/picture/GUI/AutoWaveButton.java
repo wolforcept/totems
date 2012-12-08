@@ -18,7 +18,7 @@ public class AutoWaveButton extends Button {
 
 	@Override
 	public String getStringToDrawWhenMouseOver() {
-		return "Sell this Totem";
+		return "After all enemies are gone, send in the next wave";
 	}
 
 	private void toggleImage(boolean isAutoWave) {
