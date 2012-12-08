@@ -1,0 +1,83 @@
+//	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		RLD-	TARGET TYPE				TRGT LOCK	SLOW	DUR		BURN	DUR		BNCS	RNG
+	LIFE(			"000",	"Totem of Life",		128,	1,		10.0,	0,		1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	WIND(			"A00",	"Totem of Wind",		128,	60,		3.0, 	1.0, 	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		3,		100),
+	FIRE(			"F00",	"Fire Totem",			128, 	100, 	10.0, 	10.0, 	1,		TargetType.HEALTHY,		false,		0,		0,		0,		0,		0,		0),
+	WATER(			"W00", 	"Water Totem",			128,	1,		10.0,	0.1,	1,		TargetType.HEALTHY,		true,		0,		0,		0,		0,		0,		0),
+	EARTH(			"E00",	"Earth Totem",			128, 	60, 	10.0,	10.0, 	1, 		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+//	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		RLD-	TARGET TYPE				TRGT LOCK	SLOW	DUR		BURN	DUR		BNCS	RNG
+	STEAM(			"FW0",	"Steam Totem",			128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	THUNDER(		"FA0",	"Thunder Totem",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	MAGMA(			"FE0",	"Magma Totem",			128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	CLOUD(			"WA0",	"Cloud",				128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	MUD(			"WE0",	"Mud Field",			128,	40,		10.0,	3.0,	1,		TargetType.FAST,		false,		50,		50,		0,		0,		0,		0),
+	DUST(			"EA0",	"Dust Field",			128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+//	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		RLD-	TARGET TYPE				TRGT LOCK	SLOW	DUR		BURN	DUR		BNCS	RNG		
+	BREEZE(			"AA0",	"Totem of Breezes",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	SANDSTORM(		"AAE",	"Sandstorm Totem",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	RAIN(			"AAW",	"Rain Totem",			128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	FIRESTORM(		"AAF",	"Firestorm Totem",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+//	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		RLD-	TARGET TYPE				TRGT LOCK	SLOW	DUR		BURN	DUR		BNCS	RNG	
+	BLAZE(			"FF0",	"Blaze Totem",			128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	THUNDERSTORM(	"FFA",	"Thunderstorm Totem",	128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	VULCANO(		"FFE",	"Vulcano",				128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	PLASMA(			"FFW",	"Totem of Plasma",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+//	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		RLD-	TARGET TYPE				TRGT LOCK	SLOW	DUR		BURN	DUR		BNCS	RNG	
+	GRAVITY(		"EE0",	"Gravity Field",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	CYCLONE(		"EEA",	"Cyclone Totem",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	TEPHRA(			"EEF",	"Tephra Totem",			128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	QUICKSAND(		"EEW",	"Quicksand Field",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+//	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		RLD-	TARGET TYPE				TRGT LOCK	SLOW	DUR		BURN	DUR		BNCS	RNG	
+	ZENITHTIDE(		"WW0",	"Zenith Tide Totem",	128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	BLIZZARD(		"WWA",	"Blizzard Totem",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	SLURRY(			"WWE",	"Totem of Slurry",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	TROPICALEQUINOX("WWF",	"Tropical Equinox",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+//	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		RLD-	TARGET TYPE				TRGT LOCK	SLOW	DUR		BURN	DUR		BNCS	RNG	
+	DROUGHT(		"FAE",	"Drought Field",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	BIOMASS(		"WEA",	"Biomass Totem",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	ENDSTORM(		"FWA",	"Endstorm",				128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	CHARGE(			"EWF",	"Charged Fields",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+//	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		RLD-	TARGET TYPE				TRGT LOCK	SLOW	DUR		BURN	DUR		BNCS	RNG	
+	INFERNO(		"FFF",	"Inferno Totem",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	GEM(			"EEE",	"Gem",					128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	TORNADO(		"AAA",	"Tornado Totem",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		0,		0,		0,		0,		0,		0),
+	TORRENT(		"WWW",	"Torrent Totem",		128,	1,		10.0,	0.1,	1,		TargetType.RANDOM,		false,		0,		0,		0,		0,		0,		0);
+//	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		RLD-	TARGET TYPE				TRGT LOCK	SLOW	DUR		BURN	DUR		BNCS	RNG	
+
+
+Started Loading Images
+Getting life cost=1 dps=NaN
+Getting wind cost=20 dps=1.6
+Getting fire cost=15 dps=0.0
+Getting water cost=10 dps=10.0
+Getting earth cost=25 dps=16.6
+Getting breeze cost=400 dps=0.0
+Getting blaze cost=225 dps=25.0
+Getting zenithtide cost=100 dps=25.0
+Getting gravity cost=625 dps=25.0
+Getting magma cost=375 dps=25.0
+Getting dust cost=500 dps=25.0
+Getting steam cost=150 dps=25.0
+Getting thunder cost=300 dps=25.0
+Getting cloud cost=200 dps=25.0
+Getting dust cost=500 dps=25.0
+Getting mud cost=250 dps=NaN
+Getting sandstorm cost=10000 dps=25.0
+Getting rain cost=4000 dps=25.0
+Getting firestorm cost=4500 dps=0.0
+Getting thunderstorm cost=6000 dps=25.0
+Getting vulcano cost=5625 dps=25.0
+Getting plasma cost=2250 dps=25.0
+Getting cyclone cost=12500 dps=25.0
+Getting tephra cost=9375 dps=25.0
+Getting quicksand cost=6250 dps=25.0
+Getting blizzard cost=2000 dps=25.0
+Getting tropicalequinox cost=1500 dps=25.0
+Getting slurry cost=2500 dps=25.0
+Getting endstorm cost=3000 dps=25.0
+Getting drought cost=7500 dps=25.0
+Getting charge cost=3750 dps=25.0
+Getting biomass cost=5000 dps=25.0
+Getting inferno cost=3375 dps=25.0
+Getting gem cost=15625 dps=NaN
+Getting tornado cost=8000 dps=25.0
+Getting torrent cost=1000 dps=10.0
