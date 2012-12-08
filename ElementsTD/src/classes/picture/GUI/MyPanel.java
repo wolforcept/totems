@@ -151,16 +151,19 @@ public class MyPanel extends JPanel {
 								.getLinks().entrySet().iterator(); iterator
 								.hasNext();) {
 							Point p = iterator.next().getValue();
+							g.setColor(Color.RED);
 							g.drawLine(
 									(int) (t2.getX() - 2 + 4 * Math.random()),
 									(int) (t2.getY() - 2 + 4 * Math.random()),
 									(int) (p.x - 2 + 4 * Math.random()),
 									(int) (p.y - 2 + 4 * Math.random()));
+							g.setColor(Color.GREEN);
 							g.drawLine(
 									(int) (t2.getX() - 2 + 4 * Math.random()),
 									(int) (t2.getY() - 2 + 4 * Math.random()),
 									(int) (p.x - 2 + 4 * Math.random()),
 									(int) (p.y - 2 + 4 * Math.random()));
+							g.setColor(Color.BLUE);
 							g.drawLine(
 									(int) (t2.getX() - 2 + 4 * Math.random()),
 									(int) (t2.getY() - 2 + 4 * Math.random()),
