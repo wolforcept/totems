@@ -100,13 +100,17 @@ public class Control extends Thread {
 				}
 			}
 
-			public void mousePressed(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {
+			}
 
-			public void mouseExited(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {
+			}
 
-			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseEntered(MouseEvent arg0) {
+			}
 
-			public void mouseClicked(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+			}
 		});
 
 		panel.addMouseMotionListener(new MouseMotionListener() {
@@ -364,6 +368,7 @@ public class Control extends Thread {
 				// RUN Projectiles
 				for (ProjectileParent p : data.getProjectileListClone()) {
 					p.nextImage();
+					p.parentStep();
 					p.step();
 				}
 

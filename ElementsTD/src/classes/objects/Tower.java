@@ -138,8 +138,13 @@ public class Tower extends DrawableObject {
 				firingAt = getTarget();
 			} else {
 				if (getRange() >= Auxi.point_distance(getTarget().getX(),
-						getTarget().getY(), getX(), getY()))
+						getTarget().getY(), getX(), getY())) {
 					firingAt = getTarget();
+				} else {
+					LinkedList<EnemyParent> list = getData()
+							.getEnemyListClone();
+					firingAt = pickTarget(list);
+				}
 			}
 		} else {
 			LinkedList<EnemyParent> list = getData().getEnemyListClone();
@@ -209,7 +214,7 @@ public class Tower extends DrawableObject {
 
 		for (EnemyParent e : list) {
 			if (!(e.getType().equals(EnemyType.PATHMAKER))) {
-				if(getElement().equals(Elemento.ENDSTORM)){
+				if (getElement().equals(Elemento.ENDSTORM)) {
 					return e;
 				}
 				if (getRange() >= Auxi.point_distance(getX(), getY(), e.getX(),
@@ -258,7 +263,7 @@ public class Tower extends DrawableObject {
 				ret = new ProjectilePierce(getData(), getX(), getY(), this,
 						target, getProjectileSpeed(), getDamage() * 10,
 						element, false, getRange() / getProjectileSpeed(), 0.5);
-				chargesAvaliable -= 4;
+				chargesAvaliable -= 4 - getGear();
 			} else {
 				if (charge >= maxCharge) {
 					chargesAvaliable = maxCharge;

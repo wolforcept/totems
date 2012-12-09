@@ -16,6 +16,7 @@ public abstract class DrawableObject {
 	private Animation animation;
 	private int imageNumber;
 	private double imageIndex;
+	private String imageName;
 	private Dimension size;
 
 	private boolean removed;
@@ -111,6 +112,7 @@ public abstract class DrawableObject {
 
 	public void setImages(String name) {
 		animation = Data.getAnimation(name);
+		imageName = name;
 		imageNumber = animation.getLen();
 		imageIndex = (int) (Math.random() * imageNumber);
 		this.size = new Dimension(//
@@ -146,6 +148,10 @@ public abstract class DrawableObject {
 
 	public int getImageNumber() {
 		return imageNumber;
+	}
+
+	public String getImageName() {
+		return imageName;
 	}
 
 	public boolean isAt(int xx, int yy) {

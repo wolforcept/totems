@@ -4,6 +4,7 @@ import classes.main.Data;
 import classes.main.Elemento;
 import classes.objects.DrawableObject;
 import classes.objects.Tower;
+import classes.picture.splashes.SplashParticle;
 
 public abstract class ProjectileParent extends DrawableObject {
 
@@ -33,6 +34,12 @@ public abstract class ProjectileParent extends DrawableObject {
 		slower = false;
 		burner = false;
 		bouncer = false;
+	}
+
+	public void parentStep() {
+		getData().addDrawableObject(
+				new SplashParticle(getData(), getX(), getY(), getImageName(), Math.PI
+						* Math.random(), 0, 0, 20, 0.5));
 	}
 
 	public abstract void step();
