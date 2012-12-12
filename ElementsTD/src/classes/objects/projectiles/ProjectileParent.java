@@ -39,7 +39,7 @@ public abstract class ProjectileParent extends DrawableObject {
 	public void parentStep() {
 		getData().addDrawableObject(
 				new SplashParticle(getData(), getX(), getY(), getImageName(), Math.PI
-						* Math.random(), 0, 0, 20, 0.5));
+						* Math.random(), 0, 0, 10, 0.5));
 	}
 
 	public abstract void step();

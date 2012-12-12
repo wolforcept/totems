@@ -15,11 +15,13 @@ import classes.objects.enemies.EnemyType;
 import classes.objects.projectiles.ProjectileAura;
 import classes.objects.projectiles.ProjectileBlast;
 import classes.objects.projectiles.ProjectileBomb;
+import classes.objects.projectiles.ProjectileMine;
 import classes.objects.projectiles.ProjectileParent;
 import classes.objects.projectiles.ProjectilePierce;
 import classes.objects.projectiles.ProjectilePoint;
 import classes.objects.projectiles.ProjectileSimple;
 import classes.objects.projectiles.ProjectileSuck;
+import classes.picture.GUI.MyPanel;
 import classes.picture.splashes.SplashParticle;
 import classes.picture.splashes.SplashText;
 
@@ -152,7 +154,55 @@ public class Tower extends DrawableObject {
 		}
 
 		if (getReload() <= 0) {
-			if (firingAt != null) {
+
+			if (getElement() == Elemento.TROPICALEQUINOX) {
+
+				if (getData().getEnemyListClone().isEmpty()) {
+					setReload(0);
+				} else {
+					LinkedList<PathMark> list = getData()
+							.getPathMarkListClone();
+					double xx = -100, yy = -1;
+					for (PathMark pathMark : list) {
+
+						double oldDistance = Auxi.point_distance(getX(),
+								getY(), xx, yy);
+						double newDistance = Auxi.point_distance(getX(),
+								getY(), pathMark.getX(), pathMark.getY());
+
+						if (xx == -100 || oldDistance > newDistance) {
+							boolean collides = false;
+							LinkedList<ProjectileParent> plist = getData()
+									.getProjectileListClone();
+							for (ProjectileParent p : plist) {
+								if (Auxi.collides(pathMark, p)) {
+									collides = true;
+								}
+							}
+							if (!collides) {
+								if (getRange() > Auxi.point_distance(
+										pathMark.getX(), pathMark.getY(),
+										getX(), getY())
+										&& pathMark.getX() > 0
+										&& pathMark.getX() < Data.WINDOW_SIZE.width
+										&& pathMark.getY() > 0
+										&& pathMark.getY() < Data.WINDOW_SIZE.height) {
+									xx = pathMark.getX();
+									yy = pathMark.getY();
+								}
+							}
+						}
+					}
+
+					if (xx != -100) {
+						getData().addDrawableObject(//
+								new ProjectileMine(getData(), getX(), getY(),
+										this, xx, yy, 1000, 3, 50,
+										getElement(), showSplash));
+						setReload(getMaxReload());
+					}
+				}
+			} else if (firingAt != null) {
 				ProjectileParent p = fireAt(firingAt);
 				if (p != null) {
 					getData().addDrawableObject(p);
