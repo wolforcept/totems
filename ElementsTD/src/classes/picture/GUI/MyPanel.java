@@ -45,6 +45,8 @@ public class MyPanel extends JPanel {
 
 	private Image bufferImage;
 	private Graphics bufferGraphics;
+	private double shieldImageNumber;
+	private int linkColorInt;
 
 	public void resetImage() {
 		// clean up the previous image
@@ -66,7 +68,8 @@ public class MyPanel extends JPanel {
 
 		fontMonospaced = Data.font.deriveFont(18F);
 		fontMonospacedSmall = Data.font.deriveFont(12F);
-
+		shieldImageNumber = 0;
+		linkColorInt = 0;
 		this.data = aData;
 	}
 
@@ -143,27 +146,35 @@ public class MyPanel extends JPanel {
 				}
 			}
 
+			// linkColorInt = (linkColorInt > 255 * 2) ? 0 : linkColorInt++;
+			linkColorInt = (linkColorInt + 1) % (255 * 2);
+			int colorInt = (linkColorInt <= 255) ? linkColorInt
+					: 255 - (linkColorInt - 255);
+
 			{// DRAW LINKS
 				for (Tower t2 : data.getTowerListClone()) {
 					if (t2.mouseOn()) {
-						g.setColor(Data.COLOR_LINK);
+						// g.setColor(Data.COLOR_LINK);
+
+						g.setColor(//
+						new Color(colorInt, 255, (int) (Math.random() * 255)));
 						for (Iterator<Entry<Long, Point>> iterator = t2
 								.getLinks().entrySet().iterator(); iterator
 								.hasNext();) {
 							Point p = iterator.next().getValue();
-							g.setColor(new Color(1f, 0f, 0f, 0.5f));
+							// g.setColor(new Color(1f, 0f, 0f, 0.5f));
 							g.drawLine(
 									(int) (t2.getX() - 2 + 4 * Math.random()),
 									(int) (t2.getY() - 2 + 4 * Math.random()),
 									(int) (p.x - 2 + 4 * Math.random()),
 									(int) (p.y - 2 + 4 * Math.random()));
-							g.setColor(new Color(0f, 1f, 0f, 0.5f));
+							// g.setColor(new Color(0f, 1f, 0f, 0.5f));
 							g.drawLine(
 									(int) (t2.getX() - 2 + 4 * Math.random()),
 									(int) (t2.getY() - 2 + 4 * Math.random()),
 									(int) (p.x - 2 + 4 * Math.random()),
 									(int) (p.y - 2 + 4 * Math.random()));
-							g.setColor(new Color(0f, 0f, 1f, 0.5f));
+							// g.setColor(new Color(0f, 0f, 1f, 0.5f));
 							g.drawLine(
 									(int) (t2.getX() - 2 + 4 * Math.random()),
 									(int) (t2.getY() - 2 + 4 * Math.random()),
@@ -190,7 +201,10 @@ public class MyPanel extends JPanel {
 					return (int) (Math.signum(e1.getY() - e2.getY()));
 				}
 			});
-
+			shieldImageNumber += 0.5;
+			if (shieldImageNumber >= 61) {
+				shieldImageNumber = 0;
+			}
 			for (EnemyParent e : tempEnemyList) {
 				drawImage(e, g);
 				if (!e.getType().equals(EnemyType.PATHMAKER)) {
@@ -210,6 +224,13 @@ public class MyPanel extends JPanel {
 					g.fillRect((int) e.getX1(), (int) e.getY1() - 4, Math.max(
 							0, (int) (e.getWidth() * e.getShield() / e
 									.getMaxShield())), 3);
+				}
+
+				if (e.getType() != EnemyType.PATHMAKER) {
+					if (e.getShield() > 0) {
+						drawImage("shield", (int) shieldImageNumber,
+								e.getX() - 32, e.getY() - 32, g);
+					}
 				}
 			}
 		}
@@ -340,6 +361,12 @@ public class MyPanel extends JPanel {
 
 	}
 
+	private void drawImage(String name, int imageNumber, double x, double y,
+			Graphics g) {
+
+		drawImage(Data.getAnimation(name).getImage(imageNumber), x, y, g);
+	}
+
 	private void drawImage(Image o, double x, double y, Graphics g,
 			double scaleX, double scaleY, double angle, float alpha) {
 
@@ -357,8 +384,8 @@ public class MyPanel extends JPanel {
 		g.drawImage(b, (int) x, (int) y, this);
 	}
 
-	private void drawImage(Image o, double d, double e, Graphics g) {
-		drawImage(o, d, e, g, 1, 1, 0, 1);
+	private void drawImage(Image o, double x, double y, Graphics g) {
+		drawImage(o, x, y, g, 1, 1, 0, 1);
 	}
 
 	private void drawImage(DrawableObject o, Graphics g) {

@@ -48,7 +48,7 @@ public class Data {
 			COLOR_RED = Color.RED, //
 			COLOR_SELL = Color.LIGHT_GRAY, //
 			COLOR_RANGE = new Color(96, 198, 214, 200), //
-			COLOR_LINK = new Color(255, 255, 0, 200), //
+			// COLOR_LINK = new Color(255, 255, 0, 200), //
 			COLOR_RELOAD_BAR = new Color(196, 255, 255, 180), //
 			COLOR_CHARGING_BAR = new Color(196, 0, 0, 180), //
 			COLOR_CHARGED_BAR = new Color(0, 196, 0, 180), //
@@ -132,7 +132,7 @@ public class Data {
 		getDrawableImage(1, 0.75, "buttons/focusgray", true);
 		getDrawableImage(1, 0.75, "buttons/autotrue", true);
 		getDrawableImage(1, 0.75, "buttons/autofalse", true);
-		
+
 		// Enemies
 		getDrawableImage(28, 0.75, "enemies/weeko", true);
 		getDrawableImage(60, 0.75, "enemies/spyke", true);
@@ -182,7 +182,8 @@ public class Data {
 		// OTHER
 		getDrawableImage(1, 0.75, "enemies/pathmaker", true);
 		getDrawableImage(1, 0.75, "pathmark", true);
-		
+		getDrawableImage(61, 0.25, "shield", true);
+
 		getDrawableImage(1, 0.75, "shard", true);
 		getDrawableImage(10, 0.75, "green_circle", true);
 
@@ -193,7 +194,7 @@ public class Data {
 			getAnimation(s);
 		}
 		System.out.println("Image Map Set");
-		
+
 		System.out.println("Getting Fonts");
 		try {
 			InputStream a = getClass().getClassLoader().getResourceAsStream(
@@ -505,9 +506,9 @@ public class Data {
 	}
 
 	public Tower getSelectedTower() {
-		
+
 		for (Tower t : getTowerListClone()) {
-			if(t.getId() == selectedTowerId)
+			if (t.getId() == selectedTowerId)
 				return t;
 		}
 		return null;
@@ -626,7 +627,8 @@ public class Data {
 	}
 
 	public void sendWaveIfAuto() {
-		if (isAutoWave() && (getCurrentWave() == null || getCurrentWave().isEmpty())) {
+		if (isAutoWave()
+				&& (getCurrentWave() == null || getCurrentWave().isEmpty())) {
 			boolean send = true;
 			for (EnemyParent e : getEnemyListClone()) {
 				if (!e.isRemoved()) {
