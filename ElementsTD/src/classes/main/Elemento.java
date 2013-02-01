@@ -88,6 +88,7 @@ public enum Elemento {
 	}
 
 	public int getId() {
+		System.out.println("AAAAAA"+ordinal());
 		return ordinal();
 	}
 

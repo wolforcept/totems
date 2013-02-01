@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
@@ -18,12 +20,15 @@ import java.util.Map.Entry;
 
 import javax.swing.JPanel;
 
+import classes.main.Auxi;
 import classes.main.Data;
 import classes.objects.DrawableObject;
 import classes.objects.PathMark;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 import classes.objects.enemies.EnemyType;
+import classes.objects.enemies.Path;
+import classes.objects.enemies.Wave;
 import classes.objects.projectiles.ProjectileBlast;
 import classes.objects.projectiles.ProjectileParent;
 import classes.picture.GUI.towerGUI.TowerBox;
@@ -193,11 +198,11 @@ public class MyPanel extends JPanel {
 		}
 
 		{// DRAW ENEMIES
-			LinkedList<EnemyParent> tempEnemyList = data.getEnemyListClone();
+			LinkedList<Enemy> tempEnemyList = data.getEnemyListClone();
 
-			Collections.sort(tempEnemyList, new Comparator<EnemyParent>() {
+			Collections.sort(tempEnemyList, new Comparator<Enemy>() {
 				@Override
-				public int compare(EnemyParent e1, EnemyParent e2) {
+				public int compare(Enemy e1, Enemy e2) {
 					return (int) (Math.signum(e1.getY() - e2.getY()));
 				}
 			});
@@ -205,7 +210,7 @@ public class MyPanel extends JPanel {
 			if (shieldImageNumber >= 61) {
 				shieldImageNumber = 0;
 			}
-			for (EnemyParent e : tempEnemyList) {
+			for (Enemy e : tempEnemyList) {
 				drawImage(e, g);
 				if (!e.getType().equals(EnemyType.PATHMAKER)) {
 					g.setColor(Data.COLOR_GRAY);
@@ -317,7 +322,7 @@ public class MyPanel extends JPanel {
 				} else if (s instanceof SplashParticle) {
 					drawImage(s.getCurrentImage(), s.getX() - s.getWidth() / 2,
 							s.getY() - s.getHeight() / 2, g, 1, 1, 0,
-							s.getAlpha());
+							s.getAlpha(), true);
 				}
 			}
 		}
@@ -329,18 +334,53 @@ public class MyPanel extends JPanel {
 		bufferGraphics.drawLine(data.getMouse().x, 0, data.getMouse().x,
 				getHeight());
 
-		// ENEMY HEALTH
-		drawImage(SHARD_IMAGE, 416, 2, g);
-		if (data.getCurrentWave() != null) {
-			int pos = 0;
-			for (Iterator<EnemyParent> iterator = data.getCurrentWave()
-					.getList().iterator(); iterator.hasNext();) {
-				EnemyParent e = (EnemyParent) iterator.next();
-				// TODO
-				pos++;
+		/*
+		 * NEXT WAVE INFO
+		 */
+
+		{
+			g.setFont(fontMonospacedSmall);
+			g.drawString("Wave Nr " + (data.getWaveNumber() + 1) + ":", 430, 12);
+
+			Wave nextwave = data.getNextWave();
+
+			g.drawString("Enemy Health: " + nextwave.getEnemyHealth(), 430, 24);
+
+			if (nextwave != null) {
+
+				int pos = 450;
+				for (int i = 0; i < Wave.ENEMIE_NAMES.length; i++) {
+
+					EnemyType enemyType = EnemyType
+							.valueOf(Wave.ENEMIE_NAMES[i]);
+
+					int nr = nextwave.getWaveType().enemies[i];
+
+					if (nr > 0) {
+						Animation anim = Data.getAnimation("enemies/"
+								+ enemyType.toString().toLowerCase());
+						Image a = anim.getImage(0);
+
+						drawImage(a, pos + 20, 48, g, .8, .8, 0, 0.8f, false);
+
+						g.setFont(fontMonospaced);
+
+						g.drawString("" + nr, pos - 20, 48);
+						int xx = data.getMouse().x;
+						int yy = data.getMouse().y;
+
+						if (yy > 28 && yy < 60) {
+							if (xx > pos && xx < pos + 50) {
+								drawEnemyFile(g, enemyType, pos + 16, 64);
+							}
+						}
+						pos += 64;
+					}
+
+				}
+
 			}
 		}
-
 		g.setFont(fontMonospacedSmall);
 		g.drawString("Enemy List size: " + data.getEnemyListClone().size(),
 				850, 10);
@@ -361,6 +401,54 @@ public class MyPanel extends JPanel {
 
 	}
 
+	private void drawEnemyFile(Graphics g, EnemyType e, int i, int j) {
+
+		Polygon p = new Polygon();
+		int arrowWidth = 5, arrowHeight = 6, boxWidth = 150, boxHeight = 128;
+
+		p.addPoint(i, j);
+		p.addPoint(i + arrowWidth, j + arrowHeight);
+		p.addPoint(i + boxWidth / 2, j + arrowHeight);
+		p.addPoint(i + boxWidth / 2, j + arrowHeight + boxHeight);
+		p.addPoint(i + -boxWidth / 2, j + arrowHeight + boxHeight);
+		p.addPoint(i + -boxWidth / 2, j + arrowHeight);
+		p.addPoint(i + -arrowWidth, j + arrowHeight);
+
+		g.setColor(Data.COLOR_ENEMY_FILE);
+		g.fillPolygon(p);
+
+		g.setColor(Data.COLOR_ENEMY_FILE_TEXT);
+		g.setFont(fontMonospacedSmall);
+		g.drawPolygon(p);
+
+		String name = "name: " + e.toString().toLowerCase();
+		String expp = "worth " + e.xp + " EXP. Points";
+
+		int xx = i + 5 - boxWidth / 2, yy = j + arrowHeight + 15, nl = 17;
+		g.drawString(name, xx, yy);
+		yy += nl;
+		g.drawString(expp, xx, yy);
+		yy += nl + 5;
+		g.drawString("resistances:", xx, yy);
+		yy += nl;
+		g.drawString(" - wind", xx, yy);
+		if (e.wind != 0)
+			g.drawString(e.wind + "%", xx + 60, yy);
+		yy += nl;
+		g.drawString(" - fire", xx, yy);
+		if (e.fire != 0)
+			g.drawString(e.fire + "%", xx + 60, yy);
+		yy += nl;
+		g.drawString(" - water", xx, yy);
+		if (e.water != 0)
+			g.drawString(e.water + "%", xx + 60, yy);
+		yy += nl;
+		g.drawString(" - earth", xx, yy);
+		if (e.earth != 0)
+			g.drawString(e.earth + "%", xx + 60, yy);
+		yy += nl;
+	}
+
 	private void drawImage(String name, int imageNumber, double x, double y,
 			Graphics g) {
 
@@ -368,7 +456,8 @@ public class MyPanel extends JPanel {
 	}
 
 	private void drawImage(Image o, double x, double y, Graphics g,
-			double scaleX, double scaleY, double angle, float alpha) {
+			double scaleX, double scaleY, double angle, float alpha,
+			boolean useX1Y1) {
 
 		BufferedImage b = new BufferedImage(o.getWidth(this), o.getWidth(this),
 				BufferedImage.TYPE_INT_ARGB);
@@ -381,11 +470,16 @@ public class MyPanel extends JPanel {
 				alpha));
 		gg.drawImage(o, 0, 0, this);
 
-		g.drawImage(b, (int) x, (int) y, this);
+		if (useX1Y1) {
+			g.drawImage(b, (int) x, (int) y, this);
+		} else {
+			g.drawImage(b, (int) x - (int) (b.getWidth() / 2), (int) y
+					- (int) (b.getHeight() / 2), this);
+		}
 	}
 
 	private void drawImage(Image o, double x, double y, Graphics g) {
-		drawImage(o, x, y, g, 1, 1, 0, 1);
+		drawImage(o, x, y, g, 1, 1, 0, 1, true);
 	}
 
 	private void drawImage(DrawableObject o, Graphics g) {
@@ -396,13 +490,13 @@ public class MyPanel extends JPanel {
 			if (!o.isRemoved())
 				drawImage(o.getCurrentImage(), (int) o.getX() - x,
 						(int) o.getY() - y, g, c, c, -o.getAngle(),
-						o.getAlpha());
+						o.getAlpha(), true);
 		} else {
 			if (!o.isRemoved())
 				drawImage(o.getCurrentImage(),
 						(int) (o.getX() - o.getWidth() / 2),
 						(int) (o.getY() - o.getHeight() / 2), g, 1, 1,
-						-o.getAngle(), o.getAlpha());
+						-o.getAngle(), o.getAlpha(), true);
 		}
 	}
 }

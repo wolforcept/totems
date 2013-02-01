@@ -5,7 +5,7 @@ import java.awt.Image;
 import java.awt.Point;
 
 import classes.main.Data;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 import classes.picture.GUI.Animation;
 
 public abstract class DrawableObject {
@@ -35,7 +35,7 @@ public abstract class DrawableObject {
 
 		if (this instanceof Tower) {
 			setId(data.getNewId());
-		} else if (this instanceof EnemyParent) {
+		} else if (this instanceof Enemy) {
 			setId(data.getNewId());
 		} else {
 			setId(0);
@@ -134,6 +134,10 @@ public abstract class DrawableObject {
 		}
 		return animation.getImage((int) imageIndex);
 	}
+
+	// public Image getFirstImage() {
+	// return animation.getImage(0);
+	// }
 
 	public void nextImage() {
 		imageIndex += animation.getSpeed();

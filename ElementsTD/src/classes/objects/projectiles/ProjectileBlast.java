@@ -4,7 +4,7 @@ import classes.main.Auxi;
 import classes.main.Data;
 import classes.main.Elemento;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 
 public class ProjectileBlast extends ProjectileParent {
 
@@ -39,7 +39,7 @@ public class ProjectileBlast extends ProjectileParent {
 	public void step() {
 		counter += .01 * growSpeed;
 		if (counter >= maxCount) {
-			for (EnemyParent e : getData().getEnemyListClone()) {
+			for (Enemy e : getData().getEnemyListClone()) {
 				if (radius > Auxi.point_distance(e.getX(), e.getY(), getX(),
 						getY())) {
 					e.hurt(getFather(), getDamage(), getElement(), showSplash);

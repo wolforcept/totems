@@ -7,6 +7,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import classes.objects.DrawableObject;
 
@@ -175,5 +180,13 @@ public class Auxi {
 		// Set the blank cursor to the Component.
 		c.setCursor(blankCursor);
 
+	}
+
+	public static <T> void removeDuplicates(Collection<T> l, Comparator<T> c) {
+
+		HashSet<T> s = new HashSet<T>();
+		s.addAll(l);	
+		l.clear();
+		l.addAll(s);
 	}
 }

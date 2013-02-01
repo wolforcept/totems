@@ -3,13 +3,13 @@ package classes.objects.enemies;
 public enum EnemyType {
 	PATHMAKER (1, 10,0, 0, 0, 0, 0),
 	//		HEALTH		SPEED	XP		WIND	FIRE	WATER	EARTH
-	WEEKO (	1.0,		0.8,	2,		0,		0,		0,		0), //
-	SPYKE (	0.8,		0.5,	5,		0,		0,		0,		0), //
-	GHOST (	0.7,		1,		5,		0,		0,		0,		0), //
+	WEEKO (	1.0,		0.8,	2,		0,		0,		10,		0), //
+	SPYKE (	0.8,		0.5,	5,		20,		0,		0,		0), //
+	GHOST (	0.7,		1,		3,		0,		0,		-100,	100), //
 	;
 
-	public double health, speed, wind, fire, water, earth;
-	public int xp;
+	public final double health, speed, wind, fire, water, earth;
+	public final int xp;
 
 	EnemyType(double health, double speed, int xp, double wind, double fire,
 			double water, double earth) {

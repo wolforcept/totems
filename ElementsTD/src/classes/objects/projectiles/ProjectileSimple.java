@@ -8,17 +8,17 @@ import classes.main.Auxi;
 import classes.main.Data;
 import classes.main.Elemento;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 import classes.picture.splashes.SplashParticle;
 
 public class ProjectileSimple extends ProjectileParent {
 
 	private double speed;
-	private EnemyParent tar;
+	private Enemy tar;
 	private boolean showSplash;
 
 	public ProjectileSimple(Data data, double x, double y, Tower father,
-			EnemyParent tar, double speed, double damage, Elemento elemento,
+			Enemy tar, double speed, double damage, Elemento elemento,
 			boolean showSplash) {
 		super(data, x, y, father, damage, elemento);
 		this.speed = speed;
@@ -67,14 +67,14 @@ public class ProjectileSimple extends ProjectileParent {
 				destroy();
 			} else {
 
-				LinkedList<EnemyParent> list =	getData().getEnemyListClone();
+				LinkedList<Enemy> list =	getData().getEnemyListClone();
 
 				Collections.shuffle(list);
 
-				Iterator<EnemyParent> it = list.iterator();
+				Iterator<Enemy> it = list.iterator();
 				boolean hasNewTar = false;
 				while (it.hasNext() && !hasNewTar) {
-					EnemyParent e = it.next();
+					Enemy e = it.next();
 					if (tar.getId() != e.getId()) {
 						if (getBounceRange() > Auxi.point_distance(getX(),
 								getY(), e.getX(), e.getY())) {
@@ -106,7 +106,7 @@ public class ProjectileSimple extends ProjectileParent {
 		remove();
 	}
 
-	public EnemyParent getTar() {
+	public Enemy getTar() {
 		return tar;
 	}
 

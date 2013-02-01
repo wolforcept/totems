@@ -10,7 +10,7 @@ import classes.main.Auxi;
 import classes.main.Data;
 import classes.main.Elemento;
 import classes.objects.Aura.AuraType;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 import classes.objects.enemies.EnemyType;
 import classes.objects.projectiles.ProjectileAura;
 import classes.objects.projectiles.ProjectileBlast;
@@ -32,7 +32,7 @@ public class Tower extends DrawableObject {
 	private Elemento element;
 	private boolean mouseOnMe, targetLockOn, showSplash;
 	private int gear, exp, bounceNumber, burnDuration, slowDuration, redo;
-	private EnemyParent target;
+	private Enemy target;
 	private HashMap<AuraType, Double> auras;
 	private TargetType targetType;
 	private HashMap<AuraType, LinkedList<Aura>> buffs;
@@ -133,7 +133,7 @@ public class Tower extends DrawableObject {
 	}
 
 	private void fire() {
-		EnemyParent firingAt = null;
+		Enemy firingAt = null;
 
 		if (targetLockOn && getTarget() != null && !getTarget().isRemoved()) {
 			if (getElement().equals(Elemento.ENDSTORM)) {
@@ -143,13 +143,13 @@ public class Tower extends DrawableObject {
 						getTarget().getY(), getX(), getY())) {
 					firingAt = getTarget();
 				} else {
-					LinkedList<EnemyParent> list = getData()
+					LinkedList<Enemy> list = getData()
 							.getEnemyListClone();
 					firingAt = pickTarget(list);
 				}
 			}
 		} else {
-			LinkedList<EnemyParent> list = getData().getEnemyListClone();
+			LinkedList<Enemy> list = getData().getEnemyListClone();
 			firingAt = pickTarget(list);
 		}
 
@@ -212,49 +212,49 @@ public class Tower extends DrawableObject {
 		}
 	}
 
-	private EnemyParent pickTarget(LinkedList<EnemyParent> list) {
+	private Enemy pickTarget(LinkedList<Enemy> list) {
 		switch (targetType) {
 		case RANDOM:
 			Collections.shuffle(list);
 			break;
 		case FAST:
-			Collections.sort(list, new Comparator<EnemyParent>() {
+			Collections.sort(list, new Comparator<Enemy>() {
 				@Override
-				public int compare(EnemyParent e1, EnemyParent e2) {
+				public int compare(Enemy e1, Enemy e2) {
 					return (int) (Math.signum(e2.getSpeed() - e1.getSpeed()));
 				}
 			});
 			break;
 
 		case SLOW:
-			Collections.sort(list, new Comparator<EnemyParent>() {
+			Collections.sort(list, new Comparator<Enemy>() {
 				@Override
-				public int compare(EnemyParent e1, EnemyParent e2) {
+				public int compare(Enemy e1, Enemy e2) {
 					return -(int) (Math.signum(e2.getSpeed() - e1.getSpeed()));
 				}
 			});
 			break;
 
 		case HEALTHY:
-			Collections.sort(list, new Comparator<EnemyParent>() {
+			Collections.sort(list, new Comparator<Enemy>() {
 				@Override
-				public int compare(EnemyParent e1, EnemyParent e2) {
+				public int compare(Enemy e1, Enemy e2) {
 					return (int) (Math.signum(e2.getHealth() - e1.getHealth()));
 				}
 			});
 			break;
 		case UNHEALTHY:
-			Collections.sort(list, new Comparator<EnemyParent>() {
+			Collections.sort(list, new Comparator<Enemy>() {
 				@Override
-				public int compare(EnemyParent e1, EnemyParent e2) {
+				public int compare(Enemy e1, Enemy e2) {
 					return (int) (Math.signum(e1.getHealth() - e2.getHealth()));
 				}
 			});
 			break;
 		case BURN:
-			Collections.sort(list, new Comparator<EnemyParent>() {
+			Collections.sort(list, new Comparator<Enemy>() {
 				@Override
-				public int compare(EnemyParent e1, EnemyParent e2) {
+				public int compare(Enemy e1, Enemy e2) {
 					return (int) (Math.signum(e1.getBurnDuration()
 							- e2.getBurnDuration()));
 				}
@@ -262,7 +262,7 @@ public class Tower extends DrawableObject {
 			break;
 		}
 
-		for (EnemyParent e : list) {
+		for (Enemy e : list) {
 			if (!(e.getType().equals(EnemyType.PATHMAKER))) {
 				if (getElement().equals(Elemento.ENDSTORM)) {
 					return e;
@@ -276,7 +276,7 @@ public class Tower extends DrawableObject {
 		return null;
 	}
 
-	public ProjectileParent fireAt(final EnemyParent tar) {
+	public ProjectileParent fireAt(final Enemy tar) {
 
 		this.target = tar;
 
@@ -592,7 +592,7 @@ public class Tower extends DrawableObject {
 		}
 	}
 
-	public EnemyParent getTarget() {
+	public Enemy getTarget() {
 		return target;
 	}
 

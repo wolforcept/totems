@@ -6,7 +6,7 @@ import classes.main.Auxi;
 import classes.main.Data;
 import classes.main.Elemento;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 import classes.picture.splashes.SplashParticle;
 
 public class ProjectilePierce extends ProjectileParent {
@@ -16,7 +16,7 @@ public class ProjectilePierce extends ProjectileParent {
 	private LinkedList<Long> dealtDamage;
 
 	public ProjectilePierce(Data data, double x, double y, Tower father,
-			EnemyParent tar, double speed, double damage, Elemento elemento,
+			Enemy tar, double speed, double damage, Elemento elemento,
 			boolean showSplash, double aDistance, double missDistance) {
 		super(data, x, y, father, damage, elemento);
 		this.speed = speed;
@@ -30,8 +30,8 @@ public class ProjectilePierce extends ProjectileParent {
 	@Override
 	public void step() {
 
-		LinkedList<EnemyParent> tempList = getData().getEnemyListClone();
-		for (EnemyParent enemy : tempList) {
+		LinkedList<Enemy> tempList = getData().getEnemyListClone();
+		for (Enemy enemy : tempList) {
 			if (Auxi.collides(this, enemy)) {
 				if (!dealtDamage.contains(enemy.getId())) {
 					enemy.hurt(getFather(), getDamage(), getElement(),

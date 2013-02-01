@@ -8,7 +8,7 @@ import classes.main.Auxi;
 import classes.main.Data;
 import classes.main.Elemento;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 import classes.picture.splashes.SplashParticle;
 
 public class ProjectileMine extends ProjectileParent {
@@ -32,8 +32,8 @@ public class ProjectileMine extends ProjectileParent {
 
 		if (planted) {
 
-			LinkedList<EnemyParent> tempList = getData().getEnemyListClone();
-			for (EnemyParent e : tempList) {
+			LinkedList<Enemy> tempList = getData().getEnemyListClone();
+			for (Enemy e : tempList) {
 
 				if (Auxi.collides(this, e)) {
 					collide(e);
@@ -77,7 +77,7 @@ public class ProjectileMine extends ProjectileParent {
 
 	}
 
-	private void collide(EnemyParent tar) {
+	private void collide(Enemy tar) {
 		tar.hurt(getFather(), getDamage(), getElement(), showSplash);
 
 		if (isSlower()) {

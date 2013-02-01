@@ -6,47 +6,59 @@ import classes.main.Data;
 
 public class Wave {
 
-	private LinkedList<EnemyParent> list;
+	private LinkedList<Enemy> list;
 	private int timer;
 	private int delay;
+	private WaveType waveType;
+	private double enemyHealth;
 
-	private static final String[] enemies = { "WEEKO", "SPYKE", "GHOST" };
+	public static final String[] ENEMIE_NAMES = { "WEEKO", "SPYKE", "GHOST" };
 
-	enum WaveType {
-		//				WEEKO	SPYKE	GHOST
-		WEEKO_BASIC (	5, 		0,		0), //
-		WEEKO_MEDIUM (	8, 		2,		0), //
-		WEEKO_HARD (	12, 	2,		0), //
-		GHOST_BASIC(	1,		1,		1), //
-;
-		
-		int[] enemies;
+	public enum WaveType {
+		// WEEKO SPYKE GHOST
+		BLA(0, 0, 10), //
+		WEEKO_BASIC(5, 0, 0), //
+		WEEKO_MEDIUM(8, 2, 0), //
+		WEEKO_HARD(12, 2, 0), //
+		GHOST_BASIC(1, 1, 1), //
+		;
+
+		public int[] enemies;
 
 		WaveType(int a1, int a2, int a3) {
-			int[] array = {a1,a2,a3};
+			int[] array = { a1, a2, a3 };
 			enemies = array;
+		}
+
+		public int[] getEnemies() {
+			return enemies;
 		}
 
 	};
 
-	public Wave(Data data, int pathType) {
+	public Wave(Data data, int pathType, WaveType t, double hp) {
 
-		WaveType waveType = WaveType.GHOST_BASIC;
+		waveType = t;
+		enemyHealth = hp;
 
-		list = new LinkedList<EnemyParent>();
+		list = new LinkedList<Enemy>();
 		timer = delay = 80;
-		for (int i = 0; i < enemies.length; i++) {
+		for (int i = 0; i < ENEMIE_NAMES.length; i++) {
 
-			EnemyType enemyType = EnemyType.valueOf(enemies[i]);
+			EnemyType enemyType = EnemyType.valueOf(ENEMIE_NAMES[i]);
 			for (int j = 0; j < waveType.enemies[i]; j++) {
-				list.add(new EnemyParent(data, data.getCurrentEnemyHealth(),
-						new Path(pathType), data.getCurrentReward(), enemyType.xp,
-						enemyType));
+				list.add(new Enemy(data, data.getCurrentEnemyHealth(),
+						new Path(pathType), data.getCurrentReward(),
+						enemyType.xp, enemyType));
 			}
 		}
 	}
 
-	public EnemyParent pop() {
+	public WaveType getWaveType() {
+		return waveType;
+	}
+
+	public Enemy pop() {
 		if (list.isEmpty()) {
 			System.gc();
 			return null;
@@ -66,12 +78,16 @@ public class Wave {
 		timer -= 1;
 	}
 
-	public LinkedList<EnemyParent> getList() {
+	public LinkedList<Enemy> getList() {
 		return list;
 	}
 
 	public boolean isEmpty() {
 		return list.isEmpty();
+	}
+
+	public double getEnemyHealth() {
+		return enemyHealth;
 	}
 
 }

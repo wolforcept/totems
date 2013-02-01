@@ -6,7 +6,7 @@ import classes.main.Auxi;
 import classes.main.Data;
 import classes.main.Elemento;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 import classes.picture.splashes.SplashParticle;
 
 public class ProjectileAura extends ProjectileParent {
@@ -38,8 +38,8 @@ public class ProjectileAura extends ProjectileParent {
 		setX(centrex + timer * Math.cos(timer));
 		setY(centrey + timer * Math.sin(timer));
 
-		LinkedList<EnemyParent> tempList = getData().getEnemyListClone();
-		for (EnemyParent e : tempList) {
+		LinkedList<Enemy> tempList = getData().getEnemyListClone();
+		for (Enemy e : tempList) {
 			if (Auxi.collides(e, this)) {
 				e.hurt(getFather(), getDamage(), getElement(), false);
 			}

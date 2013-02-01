@@ -11,7 +11,7 @@ import java.io.IOException;
 import classes.objects.DrawableObject;
 import classes.objects.PathMark;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 import classes.objects.enemies.EnemyType;
 import classes.objects.enemies.Path;
 import classes.objects.projectiles.ProjectileParent;
@@ -314,7 +314,7 @@ public class Control extends Thread {
 				if (data.getCurrentWave() != null) {
 					data.getCurrentWave().decrementTimer();
 					if (data.getCurrentWave().getTimer() <= 0) {
-						EnemyParent toAdd = data.getCurrentWave().pop();
+						Enemy toAdd = data.getCurrentWave().pop();
 						if (toAdd != null) {
 							data.addDrawableObject(toAdd);
 							data.getCurrentWave().resetTimer();
@@ -344,7 +344,7 @@ public class Control extends Thread {
 				}
 
 				// RUN ENEMIES
-				for (EnemyParent e : data.getEnemyListClone()) {
+				for (Enemy e : data.getEnemyListClone()) {
 					// ENEMY STEP
 					e.step();
 					if (mouseIsOnTop(data, e)) {

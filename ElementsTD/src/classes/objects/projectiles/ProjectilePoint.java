@@ -7,7 +7,7 @@ import classes.main.Auxi;
 import classes.main.Data;
 import classes.main.Elemento;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 import classes.picture.splashes.SplashParticle;
 
 public class ProjectilePoint extends ProjectileParent {
@@ -37,8 +37,8 @@ public class ProjectilePoint extends ProjectileParent {
 
 	@Override
 	public void destroy() {
-		LinkedList<EnemyParent> tempList = getData().getEnemyListClone();
-		for (EnemyParent e : tempList) {
+		LinkedList<Enemy> tempList = getData().getEnemyListClone();
+		for (Enemy e : tempList) {
 			if (Auxi.collides(this, e)) {
 				e.hurt(getFather(), getDamage(), getElement(), true);
 				switch (getElement()) {

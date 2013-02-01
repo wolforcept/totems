@@ -4,13 +4,13 @@ import classes.main.Auxi;
 import classes.main.Data;
 import classes.main.Elemento;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 
 public class ProjectileSuck extends ProjectileParent {
 
 	private double speed, dir;
 
-	public ProjectileSuck(Data data, EnemyParent tar, Tower father,
+	public ProjectileSuck(Data data, Enemy tar, Tower father,
 			Tower tower, double speed, double damage, Elemento elemento) {
 		super(data, tar.getX(), tar.getY(), father, damage, elemento);
 		this.speed = speed;

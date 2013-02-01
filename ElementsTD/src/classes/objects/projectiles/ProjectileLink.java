@@ -6,7 +6,7 @@ import classes.main.Auxi;
 import classes.main.Data;
 import classes.main.Elemento;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 
 public class ProjectileLink extends ProjectileParent {
 
@@ -14,7 +14,7 @@ public class ProjectileLink extends ProjectileParent {
 	private boolean showSplash;
 
 	public ProjectileLink(Data data, double x, double y, Tower father,
-			EnemyParent tar, double speed, double damage, Elemento elemento,
+			Enemy tar, double speed, double damage, Elemento elemento,
 			boolean showSplash, double aDistance) {
 		super(data, x, y, father, damage, elemento);
 		this.speed = speed;
@@ -26,8 +26,8 @@ public class ProjectileLink extends ProjectileParent {
 	@Override
 	public void step() {
 
-		LinkedList<EnemyParent> tempList = getData().getEnemyListClone();
-		for (EnemyParent enemy : tempList) {
+		LinkedList<Enemy> tempList = getData().getEnemyListClone();
+		for (Enemy enemy : tempList) {
 			if (Auxi.collides(this, enemy)) {
 				enemy.hurt(getFather(), getDamage(), getElement(), showSplash);
 			}

@@ -11,7 +11,7 @@ import classes.objects.Tower;
 import classes.picture.splashes.SplashParticle;
 import classes.picture.splashes.SplashText;
 
-public class EnemyParent extends DrawableObject {
+public class Enemy extends DrawableObject {
 
 	private Path path;
 	private double[] resists = { 0, 0, 0, 0 };
@@ -24,7 +24,7 @@ public class EnemyParent extends DrawableObject {
 	private Point tar;
 	private EnemyType type;
 
-	public EnemyParent(Data data, double health, Path path, int reward,
+	public Enemy(Data data, double health, Path path, int reward,
 			int expReward, EnemyType aType) {
 		super(data, path.getStart().x, path.getStart().y);
 
@@ -37,7 +37,9 @@ public class EnemyParent extends DrawableObject {
 		burningDuration = 0;
 		dead = false;
 		speed = type.speed;
-		shield = maxShield = health/2;
+		shield = maxShield = 0;
+		if (Math.random() < 0.2)
+			shield = maxShield = health / 2;
 		setImages("enemies/" + type.toString().toLowerCase());
 		tar = path.nextPoint();
 
@@ -56,7 +58,7 @@ public class EnemyParent extends DrawableObject {
 	}
 
 	public void addResistance(Elemento e, double resistAmount) {
-		resists[e.getId()] = resistAmount;
+		resists[e.getId() - 1] = resistAmount;
 	}
 
 	public double getHealth() {
@@ -112,12 +114,15 @@ public class EnemyParent extends DrawableObject {
 			double dir = Auxi.point_direction(getX(), getY(), tar.x, tar.y);
 			if (type.equals(EnemyType.PATHMAKER)) {
 				setAngle(dir);
-				double xx = getX() - 20 * Math.cos(dir)+ Math.random() * 10 - 5;
-				double yy = getY() + 20 * Math.sin(dir) + Math.random() * 10 -5;
+				double xx = getX() - 20 * Math.cos(dir) + Math.random() * 10
+						- 5;
+				double yy = getY() + 20 * Math.sin(dir) + Math.random() * 10
+						- 5;
 				getData().addDrawableObject(
 						new SplashParticle(getData(), xx, yy, "particles/fire",
-								Math.random() * Math.PI * 2, Math.random() * 4 - 2,
-								Math.random() * 4 - 2, 20, 0.1));
+								Math.random() * Math.PI * 2,
+								Math.random() * 4 - 2, Math.random() * 4 - 2,
+								20, 0.1));
 			}
 			if (Auxi.point_distance(getX(), getY(), tar.x, tar.y) <= speed) {
 
@@ -232,8 +237,9 @@ public class EnemyParent extends DrawableObject {
 
 		if (showSplash) {
 			getData().addDrawableObject(
-					new SplashText(getData(), getX(), getY(), damage + "",
-							false, Data.COLOR_HIT_NORMAL));
+					new SplashText(getData(), getX(), getY(), dmg[0] + dmg[1]
+							+ dmg[2] + dmg[3] + "", false,
+							Data.COLOR_HIT_NORMAL));
 		}
 	}
 

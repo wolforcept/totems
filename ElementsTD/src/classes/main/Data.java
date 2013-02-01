@@ -17,10 +17,11 @@ import javax.imageio.ImageIO;
 import classes.objects.DrawableObject;
 import classes.objects.PathMark;
 import classes.objects.Tower;
-import classes.objects.enemies.EnemyParent;
+import classes.objects.enemies.Enemy;
 import classes.objects.enemies.EnemyType;
 import classes.objects.enemies.Path;
 import classes.objects.enemies.Wave;
+import classes.objects.enemies.Wave.WaveType;
 import classes.objects.projectiles.ProjectileParent;
 import classes.picture.GUI.Animation;
 import classes.picture.GUI.towerGUI.TowerBox;
@@ -56,7 +57,9 @@ public class Data {
 			COLOR_GRAY = new Color(128, 128, 128), //
 			COLOR_SELECTED_TOWER_BUTTON = new Color(200, 200, 0), //
 			COLOR_GRAY_OUT_BUTTONS = new Color(0.5f, 0.5f, 0.5f, 0.5f), //
-			COLOR_TOOLTIP_TEXT = new Color(96, 198, 214, 200)//
+			COLOR_TOOLTIP_TEXT = new Color(96, 198, 214, 200),//
+			COLOR_ENEMY_FILE = new Color(96, 198, 214, 150), //
+			COLOR_ENEMY_FILE_TEXT = new Color(196, 255, 255, 180) //
 			;
 
 	public void loadImages() {
@@ -259,7 +262,7 @@ public class Data {
 	}
 
 	private LinkedList<Tower> towerList;
-	private LinkedList<EnemyParent> enemyList;
+	private LinkedList<Enemy> enemyList;
 	private LinkedList<ProjectileParent> projectileList;
 
 	private LinkedList<DrawableObject> staticList;
@@ -279,10 +282,11 @@ public class Data {
 
 	private int waveNumber;
 	private Wave currentWave;
+	private Wave nextWave;
 
 	private int shards;
 	private int pathType;
-	private EnemyParent pathMaker;
+	private Enemy pathMaker;
 	private long currentId;
 	private long selectedTowerId;
 	private TowerBox currentBox;
@@ -292,7 +296,7 @@ public class Data {
 		pathType = p;
 
 		towerList = new LinkedList<Tower>();
-		enemyList = new LinkedList<EnemyParent>();
+		enemyList = new LinkedList<Enemy>();
 		projectileList = new LinkedList<ProjectileParent>();
 
 		staticList = new LinkedList<DrawableObject>();
@@ -314,6 +318,7 @@ public class Data {
 		currentEnemyHealthGain = STARTING_HEALTH_GAIN;
 		currentReward = STARTING_REWARD;
 		shards = STARTING_SHARDS;
+
 		waveNumber = 0;
 		autoWave = false;
 
@@ -322,6 +327,9 @@ public class Data {
 		creatingPath = true;
 
 		loadImages();
+
+		setNextWave();
+
 	}
 
 	public void addDrawableObject(DrawableObject o) {
@@ -329,9 +337,9 @@ public class Data {
 			towerLock.lock();
 			towerList.add((Tower) o);
 			towerLock.unlock();
-		} else if (o instanceof EnemyParent) {
+		} else if (o instanceof Enemy) {
 			enemyLock.lock();
-			enemyList.add((EnemyParent) o);
+			enemyList.add((Enemy) o);
 			enemyLock.unlock();
 		} else if (o instanceof ProjectileParent) {
 			projectileLock.lock();
@@ -409,8 +417,12 @@ public class Data {
 		return currentWave;
 	}
 
-	public void setCurrentWave(Wave currentWave) {
-		this.currentWave = currentWave;
+	public void setCurrentWave(Wave wave) {
+		this.currentWave = wave;
+	}
+
+	public void setNextWave(Wave wave) {
+		this.nextWave = wave;
 	}
 
 	public int getPathType() {
@@ -418,7 +430,7 @@ public class Data {
 	}
 
 	public void createPathMaker(Path path) {
-		pathMaker = new EnemyParent(this, 1, path, 0, 0, EnemyType.PATHMAKER);
+		pathMaker = new Enemy(this, 1, path, 0, 0, EnemyType.PATHMAKER);
 		addDrawableObject(pathMaker);
 	}
 
@@ -436,10 +448,10 @@ public class Data {
 
 	}
 
-	public LinkedList<EnemyParent> getEnemyListClone() {
+	public LinkedList<Enemy> getEnemyListClone() {
 		try {
 			enemyLock.lock();
-			return new LinkedList<EnemyParent>(enemyList);
+			return new LinkedList<Enemy>(enemyList);
 		} finally {
 			enemyLock.unlock();
 		}
@@ -546,16 +558,6 @@ public class Data {
 		return creatingPath;
 	}
 
-	public void sendNextWave() {
-		incrementWaveNumber();
-		incrementReward();
-		setCurrentWave(new Wave(this, pathType));
-	}
-
-	public boolean isAutoWave() {
-		return autoWave;
-	}
-
 	public void toggleAutoWaveLock() {
 		if (autoWave) {
 			autoWave = false;
@@ -616,9 +618,9 @@ public class Data {
 		staticLock.unlock();
 
 		enemyLock.lock();
-		for (Iterator<EnemyParent> iterator = enemyList.iterator(); //
+		for (Iterator<Enemy> iterator = enemyList.iterator(); //
 		iterator.hasNext();) {
-			EnemyParent e = iterator.next();
+			Enemy e = iterator.next();
 			if (e.isRemoved()) {
 				iterator.remove();
 			}
@@ -630,7 +632,7 @@ public class Data {
 		if (isAutoWave()
 				&& (getCurrentWave() == null || getCurrentWave().isEmpty())) {
 			boolean send = true;
-			for (EnemyParent e : getEnemyListClone()) {
+			for (Enemy e : getEnemyListClone()) {
 				if (!e.isRemoved()) {
 					send = false;
 				}
@@ -638,6 +640,27 @@ public class Data {
 			if (send)
 				sendNextWave();
 		}
+	}
+
+	private void setNextWave() {
+		int wt = waveNumber % WaveType.values().length;
+		setNextWave(new Wave(this, pathType, WaveType.values()[wt],
+				currentEnemyHealth));
+	}
+	
+	public Wave getNextWave() {
+		return nextWave;
+	}
+	
+	public void sendNextWave() {
+		incrementWaveNumber();
+		incrementReward();
+		currentWave = nextWave;
+		setNextWave();
+	}
+
+	public boolean isAutoWave() {
+		return autoWave;
 	}
 
 }
