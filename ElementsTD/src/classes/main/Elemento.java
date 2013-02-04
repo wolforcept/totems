@@ -39,7 +39,7 @@ public enum Elemento {
 	TROPICALEQUINOX("WWF",	"Tropical Equinox",		128,	500,	5.0,	50.0,	1,		TargetType.RANDOM,		true,		true,		50,		50,		0,		0,		0,		0),
 //	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		REDO	TARGET TYPE				TRGT LOCK	SPLASH		SLOW	DUR		BURN	DUR		BNCS	RNG	
 	DROUGHT(		"FAE",	"Drought Field",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),
-	BIOMASS(		"WEA",	"Biomass Totem",		128,	2,		5.0,	0.5,	1,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),
+	BIOMASS(		"WEA",	"Biomass Totem",		150,	2,		5.0,	10,		1,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),
 	ENDSTORM(		"FWA",	"Endstorm",				128,	10,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),
 	CHARGE(			"EWF",	"Charged Fields",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),
 //	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		REDO	TARGET TYPE				TRGT LOCK	SPLASH		SLOW	DUR		BURN	DUR		BNCS	RNG	

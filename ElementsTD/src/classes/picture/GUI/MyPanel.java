@@ -339,12 +339,10 @@ public class MyPanel extends JPanel {
 		 */
 
 		{
-			g.setFont(fontMonospacedSmall);
-			g.drawString("Wave Nr " + (data.getWaveNumber() + 1) + ":", 430, 12);
+			g.setFont(fontMonospaced);
+			g.drawString("Wave Nr " + (data.getWaveNumber() + 1) + ":", 430, 22);
 
 			Wave nextwave = data.getNextWave();
-
-			g.drawString("Enemy Health: " + nextwave.getEnemyHealth(), 430, 24);
 
 			if (nextwave != null) {
 
@@ -371,7 +369,8 @@ public class MyPanel extends JPanel {
 
 						if (yy > 28 && yy < 60) {
 							if (xx > pos && xx < pos + 50) {
-								drawEnemyFile(g, enemyType, pos + 16, 64);
+								drawEnemyFile(g, nextwave.getEnemyHealth(),
+										enemyType, pos + 16, 64);
 							}
 						}
 						pos += 64;
@@ -401,10 +400,11 @@ public class MyPanel extends JPanel {
 
 	}
 
-	private void drawEnemyFile(Graphics g, EnemyType e, int i, int j) {
+	private void drawEnemyFile(Graphics g, double mainHealth, EnemyType e,
+			int i, int j) {
 
 		Polygon p = new Polygon();
-		int arrowWidth = 5, arrowHeight = 6, boxWidth = 150, boxHeight = 128;
+		int arrowWidth = 5, arrowHeight = 6, boxWidth = 150, boxHeight = 143;
 
 		p.addPoint(i, j);
 		p.addPoint(i + arrowWidth, j + arrowHeight);
@@ -421,31 +421,32 @@ public class MyPanel extends JPanel {
 		g.setFont(fontMonospacedSmall);
 		g.drawPolygon(p);
 
-		String name = "name: " + e.toString().toLowerCase();
-		String expp = "worth " + e.xp + " EXP. Points";
+		double health = e.health * mainHealth;
 
 		int xx = i + 5 - boxWidth / 2, yy = j + arrowHeight + 15, nl = 17;
-		g.drawString(name, xx, yy);
+		g.drawString("Name: " + e.toString().toLowerCase(), xx, yy);
 		yy += nl;
-		g.drawString(expp, xx, yy);
+		g.drawString("Heatlh: " + (((int) (100 * health)) / 100), xx, yy);
+		yy += nl;
+		g.drawString("Worth: " + (((int) (100 * e.xp)) / 100), xx, yy);
 		yy += nl + 5;
 		g.drawString("resistances:", xx, yy);
 		yy += nl;
 		g.drawString(" - wind", xx, yy);
 		if (e.wind != 0)
-			g.drawString(e.wind + "%", xx + 60, yy);
+			g.drawString((((int) (100 * e.wind)) / 100) + "%", xx + 70, yy);
 		yy += nl;
 		g.drawString(" - fire", xx, yy);
 		if (e.fire != 0)
-			g.drawString(e.fire + "%", xx + 60, yy);
+			g.drawString((((int) (100 * e.fire)) / 100) + "%", xx + 70, yy);
 		yy += nl;
 		g.drawString(" - water", xx, yy);
 		if (e.water != 0)
-			g.drawString(e.water + "%", xx + 60, yy);
+			g.drawString((((int) (100 * e.water)) / 100) + "%", xx + 70, yy);
 		yy += nl;
 		g.drawString(" - earth", xx, yy);
 		if (e.earth != 0)
-			g.drawString(e.earth + "%", xx + 60, yy);
+			g.drawString((((int) (100 * e.earth)) / 100) + "%", xx + 70, yy);
 		yy += nl;
 	}
 

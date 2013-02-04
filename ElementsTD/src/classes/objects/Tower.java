@@ -21,7 +21,6 @@ import classes.objects.projectiles.ProjectilePierce;
 import classes.objects.projectiles.ProjectilePoint;
 import classes.objects.projectiles.ProjectileSimple;
 import classes.objects.projectiles.ProjectileSuck;
-import classes.picture.GUI.MyPanel;
 import classes.picture.splashes.SplashParticle;
 import classes.picture.splashes.SplashText;
 
