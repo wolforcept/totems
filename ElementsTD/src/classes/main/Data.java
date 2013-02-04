@@ -290,6 +290,7 @@ public class Data {
 	private long currentId;
 	private long selectedTowerId;
 	private TowerBox currentBox;
+	private boolean fancy_graphics;
 
 	public Data(int p) {
 
@@ -324,6 +325,8 @@ public class Data {
 
 		currentId = 0;
 
+		fancy_graphics = false;
+
 		creatingPath = true;
 
 		loadImages();
@@ -350,9 +353,11 @@ public class Data {
 			pathMarkList.add((PathMark) o);
 			pathMarkLock.unlock();
 		} else if (o instanceof Splash) {
-			splashLock.lock();
-			splashList.add((Splash) o);
-			splashLock.unlock();
+			if (fancy_graphics || (o instanceof SplashText)) {
+				splashLock.lock();
+				splashList.add((Splash) o);
+				splashLock.unlock();
+			}
 		} else {
 			staticLock.lock();
 			staticList.add(o);
@@ -647,11 +652,11 @@ public class Data {
 		setNextWave(new Wave(this, pathType, WaveType.values()[wt],
 				currentEnemyHealth));
 	}
-	
+
 	public Wave getNextWave() {
 		return nextWave;
 	}
-	
+
 	public void sendNextWave() {
 		incrementWaveNumber();
 		incrementReward();
@@ -663,4 +668,13 @@ public class Data {
 		return autoWave;
 	}
 
+	public void toggleFancyGraphics() {
+
+		fancy_graphics = fancy_graphics ? false : true;
+
+	}
+
+	public boolean isFancyGraphics() {
+		return fancy_graphics;
+	}
 }

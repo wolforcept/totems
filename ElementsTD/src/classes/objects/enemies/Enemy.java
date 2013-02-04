@@ -237,8 +237,8 @@ public class Enemy extends DrawableObject {
 
 		if (showSplash) {
 			getData().addDrawableObject(
-					new SplashText(getData(), getX(), getY(), dmg[0] + dmg[1]
-							+ dmg[2] + dmg[3] + "", false,
+					new SplashText(getData(), getX(), getY(), ""
+							+ (int) (dmg[0] + dmg[1] + dmg[2] + dmg[3]), false,
 							Data.COLOR_HIT_NORMAL));
 		}
 	}

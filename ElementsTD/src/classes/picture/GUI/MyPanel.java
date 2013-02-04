@@ -191,10 +191,13 @@ public class MyPanel extends JPanel {
 			}
 		}
 
+		// DRAW PROJECTILES
 		LinkedList<ProjectileParent> tempProjectileList = data
 				.getProjectileListClone();
 		for (ProjectileParent p : tempProjectileList) {
-			drawImage(p, g);
+			if (!Auxi.collides(new Point((int) p.getFather().getX(), (int) p
+					.getFather().getY()), p))
+				drawImage(p, g);
 		}
 
 		{// DRAW ENEMIES
@@ -327,12 +330,11 @@ public class MyPanel extends JPanel {
 			}
 		}
 
-		g.setColor(Data.COLOR_TOOLTIP_TEXT);
 		// LINES OF MOUSE
-		bufferGraphics.drawLine(0, data.getMouse().y, getWidth(),
-				data.getMouse().y);
-		bufferGraphics.drawLine(data.getMouse().x, 0, data.getMouse().x,
-				getHeight());
+		// g.setColor(Data.COLOR_TOOLTIP_TEXT);
+		// bufferGraphics.drawLine(0, data.getMouse().y, getWidth(),
+		// data.getMouse().y); bufferGraphics.drawLine(data.getMouse().x, 0,
+		// data.getMouse().x, getHeight());
 
 		/*
 		 * NEXT WAVE INFO

@@ -17,6 +17,7 @@ import classes.objects.enemies.Path;
 import classes.objects.projectiles.ProjectileParent;
 import classes.picture.GUI.AutoWaveButton;
 import classes.picture.GUI.Button;
+import classes.picture.GUI.FancyGraphicsButton;
 import classes.picture.GUI.MyPanel;
 import classes.picture.GUI.NextWaveButton;
 import classes.picture.GUI.towerGUI.TowerBox;
@@ -53,6 +54,8 @@ public class Control extends Thread {
 		data.addDrawableObject(new NextWaveButton(data, 688, 22));
 		data.addDrawableObject(new AutoWaveButton(data, 688, 22 + 32));
 
+		data.addDrawableObject(new FancyGraphicsButton(data, 788, 22 + 32));
+		
 		data.createPathMaker(new Path(data.getPathType()));
 
 		System.out.println("Buttons set up.");
