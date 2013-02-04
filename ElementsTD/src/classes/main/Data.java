@@ -325,7 +325,7 @@ public class Data {
 
 		currentId = 0;
 
-		fancy_graphics = false;
+		fancy_graphics = true;
 
 		creatingPath = true;
 

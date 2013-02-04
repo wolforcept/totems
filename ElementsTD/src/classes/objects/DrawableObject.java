@@ -50,6 +50,14 @@ public abstract class DrawableObject {
 		return y;
 	}
 
+	public int getIntX() {
+		return (int) x;
+	}
+
+	public int getIntY() {
+		return (int) y;
+	}
+
 	public double getX1() {
 		return x - size.width / 2;
 	}

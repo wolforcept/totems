@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
@@ -20,14 +19,12 @@ import java.util.Map.Entry;
 
 import javax.swing.JPanel;
 
-import classes.main.Auxi;
 import classes.main.Data;
 import classes.objects.DrawableObject;
 import classes.objects.PathMark;
 import classes.objects.Tower;
 import classes.objects.enemies.Enemy;
 import classes.objects.enemies.EnemyType;
-import classes.objects.enemies.Path;
 import classes.objects.enemies.Wave;
 import classes.objects.projectiles.ProjectileBlast;
 import classes.objects.projectiles.ProjectileParent;
@@ -195,9 +192,7 @@ public class MyPanel extends JPanel {
 		LinkedList<ProjectileParent> tempProjectileList = data
 				.getProjectileListClone();
 		for (ProjectileParent p : tempProjectileList) {
-			if (!Auxi.collides(new Point((int) p.getFather().getX(), (int) p
-					.getFather().getY()), p))
-				drawImage(p, g);
+			drawImage(p, g);
 		}
 
 		{// DRAW ENEMIES
@@ -325,13 +320,12 @@ public class MyPanel extends JPanel {
 				} else if (s instanceof SplashParticle) {
 					drawImage(s.getCurrentImage(), s.getX() - s.getWidth() / 2,
 							s.getY() - s.getHeight() / 2, g, 1, 1, 0,
-							s.getAlpha(), true);
+							s.getAlpha());
 				}
 			}
 		}
 
 		// LINES OF MOUSE
-		// g.setColor(Data.COLOR_TOOLTIP_TEXT);
 		// bufferGraphics.drawLine(0, data.getMouse().y, getWidth(),
 		// data.getMouse().y); bufferGraphics.drawLine(data.getMouse().x, 0,
 		// data.getMouse().x, getHeight());
@@ -341,6 +335,7 @@ public class MyPanel extends JPanel {
 		 */
 
 		{
+			g.setColor(Data.COLOR_TOOLTIP_TEXT);
 			g.setFont(fontMonospaced);
 			g.drawString("Wave Nr " + (data.getWaveNumber() + 1) + ":", 430, 22);
 
@@ -361,7 +356,7 @@ public class MyPanel extends JPanel {
 								+ enemyType.toString().toLowerCase());
 						Image a = anim.getImage(0);
 
-						drawImage(a, pos + 20, 48, g, .8, .8, 0, 0.8f, false);
+						drawImage(a, pos + 20, 48, g, .8, .8, 0, 0.8f);
 
 						g.setFont(fontMonospaced);
 
@@ -459,8 +454,7 @@ public class MyPanel extends JPanel {
 	}
 
 	private void drawImage(Image o, double x, double y, Graphics g,
-			double scaleX, double scaleY, double angle, float alpha,
-			boolean useX1Y1) {
+			double scaleX, double scaleY, double angle, float alpha) {
 
 		BufferedImage b = new BufferedImage(o.getWidth(this), o.getWidth(this),
 				BufferedImage.TYPE_INT_ARGB);
@@ -473,33 +467,37 @@ public class MyPanel extends JPanel {
 				alpha));
 		gg.drawImage(o, 0, 0, this);
 
-		if (useX1Y1) {
-			g.drawImage(b, (int) x, (int) y, this);
-		} else {
-			g.drawImage(b, (int) x - (int) (b.getWidth() / 2), (int) y
-					- (int) (b.getHeight() / 2), this);
-		}
+		g.drawImage(b, (int) x, (int) y, this);
+
 	}
 
 	private void drawImage(Image o, double x, double y, Graphics g) {
-		drawImage(o, x, y, g, 1, 1, 0, 1, true);
+		drawImage(o, x, y, g, 1, 1, 0, 1);
+	}
+
+	private void drawImage(DrawableObject o, Graphics g, boolean useX1Y1) {
+		if (o instanceof ProjectileBlast) {
+			// double c = ((ProjectileBlast) o).getCounter();
+			// double x = (o.getWidth() * c / 2);
+			// double y = (o.getHeight() * c / 2);
+			// if (!o.isRemoved())
+			// drawImage(o.getCurrentImage(), (int) o.getX() - x,
+			// (int) o.getY() - y, g, c, c, -o.getAngle(),
+			// o.getAlpha(), true);
+
+			double scale = ((ProjectileBlast) o).getCounter();
+
+			drawImage(o.getCurrentImage(), o.getX(), o.getY(), g, scale, scale,
+					0, 1);
+
+		} else {
+			if (!o.isRemoved())
+				drawImage(o.getCurrentImage(), o.getIntX(), o.getIntY(), g, 1,
+						1, -o.getAngle(), o.getAlpha());
+		}
 	}
 
 	private void drawImage(DrawableObject o, Graphics g) {
-		if (o instanceof ProjectileBlast) {
-			double c = ((ProjectileBlast) o).getCounter();
-			double x = (o.getWidth() * c / 2);
-			double y = (o.getHeight() * c / 2);
-			if (!o.isRemoved())
-				drawImage(o.getCurrentImage(), (int) o.getX() - x,
-						(int) o.getY() - y, g, c, c, -o.getAngle(),
-						o.getAlpha(), true);
-		} else {
-			if (!o.isRemoved())
-				drawImage(o.getCurrentImage(),
-						(int) (o.getX() - o.getWidth() / 2),
-						(int) (o.getY() - o.getHeight() / 2), g, 1, 1,
-						-o.getAngle(), o.getAlpha(), true);
-		}
+		drawImage(o, g, true);
 	}
 }
