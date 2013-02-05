@@ -253,7 +253,7 @@ public class MyPanel extends JPanel {
 			LinkedList<DrawableObject> tempStaticList = data
 					.getStaticListClone();
 			for (DrawableObject p : tempStaticList) {
-				drawImage(p, g);
+				drawImage(p, g, true);
 				if (p instanceof TowerButton) {
 					if (data.getSelectedElement() == ((TowerButton) p)
 							.getElement()) {
@@ -356,9 +356,15 @@ public class MyPanel extends JPanel {
 								+ enemyType.toString().toLowerCase());
 						Image a = anim.getImage(0);
 
-						drawImage(a, pos + 20, 48, g, .8, .8, 0, 0.8f);
+						double drawx = pos + 20 - (a.getWidth(this) / 2);
+						double drawy = 50 - (a.getHeight(this) / 2);
+						g.setColor(Color.yellow);
+						g.drawLine((int) drawx, (int) drawy, (int) drawx,
+								(int) drawy);
+						drawImage(a, drawx, drawy, g, .8, .8, 0, 0.8f);
 
 						g.setFont(fontMonospaced);
+						g.setColor(Data.COLOR_TOOLTIP_TEXT);
 
 						g.drawString("" + nr, pos - 20, 48);
 						int xx = data.getMouse().x;
@@ -476,6 +482,12 @@ public class MyPanel extends JPanel {
 	}
 
 	private void drawImage(DrawableObject o, Graphics g, boolean useX1Y1) {
+		double x = o.getX(), y = o.getY();
+		if (useX1Y1) {
+			x = o.getX1();
+			y = o.getY1();
+		}
+
 		if (o instanceof ProjectileBlast) {
 			// double c = ((ProjectileBlast) o).getCounter();
 			// double x = (o.getWidth() * c / 2);
@@ -487,13 +499,12 @@ public class MyPanel extends JPanel {
 
 			double scale = ((ProjectileBlast) o).getCounter();
 
-			drawImage(o.getCurrentImage(), o.getX(), o.getY(), g, scale, scale,
-					0, 1);
+			drawImage(o.getCurrentImage(), x, y, g, scale, scale, 0, 1);
 
 		} else {
 			if (!o.isRemoved())
-				drawImage(o.getCurrentImage(), o.getIntX(), o.getIntY(), g, 1,
-						1, -o.getAngle(), o.getAlpha());
+				drawImage(o.getCurrentImage(), x, y, g, 1, 1, -o.getAngle(),
+						o.getAlpha());
 		}
 	}
 
