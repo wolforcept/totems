@@ -16,7 +16,7 @@ public class ProjectileBlast extends ProjectileParent {
 	public ProjectileBlast(Data data, double x, double y, Tower father,
 			double damage, Elemento elemento, double aRadius,
 			boolean aShowSplash) {
-		super(data, x, y, father, damage, elemento);
+		super(data, x, y, father, damage, 0, elemento);
 		counter = 0;
 		radius = aRadius;
 		maxCount = (float) (radius / (getAnimation().getWidth() / 2));

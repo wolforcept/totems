@@ -13,15 +13,13 @@ import classes.picture.splashes.SplashParticle;
 
 public class ProjectileSimple extends ProjectileParent {
 
-	private double speed;
 	private Enemy tar;
 	private boolean showSplash;
 
 	public ProjectileSimple(Data data, double x, double y, Tower father,
 			Enemy tar, double speed, double damage, Elemento elemento,
 			boolean showSplash) {
-		super(data, x, y, father, damage, elemento);
-		this.speed = speed;
+		super(data, x, y, father, damage, speed, elemento);
 		this.tar = tar;
 		this.showSplash = showSplash;
 	}
@@ -31,7 +29,7 @@ public class ProjectileSimple extends ProjectileParent {
 
 		if (tar == null) {
 			remove();
-		} else if (Auxi.point_distance(getX(), getY(), tar.getX(), tar.getY()) <= speed) {
+		} else if (Auxi.point_distance(getX(), getY(), tar.getX(), tar.getY()) <= getSpeed()) {
 
 			tar.hurt(getFather(), getDamage(), getElement(), showSplash);
 
@@ -67,7 +65,7 @@ public class ProjectileSimple extends ProjectileParent {
 				destroy();
 			} else {
 
-				LinkedList<Enemy> list =	getData().getEnemyListClone();
+				LinkedList<Enemy> list = getData().getEnemyListClone();
 
 				Collections.shuffle(list);
 
@@ -95,8 +93,8 @@ public class ProjectileSimple extends ProjectileParent {
 				setDirection(Auxi.point_direction(getX(), getY(), tar.getX(),
 						tar.getY()));
 				setAngle(getDirection());
-				addX(speed * Math.cos(getDirection()));
-				addY(-speed * Math.sin(getDirection()));
+				addX(getSpeed() * Math.cos(getDirection()));
+				addY(-getSpeed() * Math.sin(getDirection()));
 			}
 		}
 	}
@@ -110,7 +108,4 @@ public class ProjectileSimple extends ProjectileParent {
 		return tar;
 	}
 
-	public double getSpeed() {
-		return speed;
-	}
 }

@@ -1,7 +1,5 @@
 package classes.objects.projectiles;
 
-import java.awt.Point;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import classes.main.Auxi;
@@ -13,15 +11,14 @@ import classes.picture.splashes.SplashParticle;
 
 public class ProjectileMine extends ProjectileParent {
 
-	private double speed, tarx, tary;
+	private double tarx, tary;
 	private boolean showSplash;
 	private boolean planted;
 
 	public ProjectileMine(Data data, double x, double y, Tower father,
 			double tarx, double tary, int duration, double speed,
 			double damage, Elemento elemento, boolean showSplash) {
-		super(data, x, y, father, damage, elemento);
-		this.speed = speed;
+		super(data, x, y, father, damage, speed, elemento);
 		this.tarx = tarx;
 		this.tary = tary;
 		this.showSplash = showSplash;
@@ -41,7 +38,7 @@ public class ProjectileMine extends ProjectileParent {
 
 			}
 
-		} else if (Auxi.point_distance(getX(), getY(), tarx, tary) <= speed) {
+		} else if (Auxi.point_distance(getX(), getY(), tarx, tary) <= getSpeed()) {
 
 			planted = true;
 
@@ -94,7 +91,4 @@ public class ProjectileMine extends ProjectileParent {
 		remove();
 	}
 
-	public double getSpeed() {
-		return speed;
-	}
 }

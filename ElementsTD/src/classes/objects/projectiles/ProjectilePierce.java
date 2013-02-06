@@ -11,15 +11,14 @@ import classes.picture.splashes.SplashParticle;
 
 public class ProjectilePierce extends ProjectileParent {
 
-	private double speed, dir, distance;
+	private double dir, distance;
 	private boolean showSplash;
 	private LinkedList<Long> dealtDamage;
 
 	public ProjectilePierce(Data data, double x, double y, Tower father,
 			Enemy tar, double speed, double damage, Elemento elemento,
 			boolean showSplash, double aDistance, double missDistance) {
-		super(data, x, y, father, damage, elemento);
-		this.speed = speed;
+		super(data, x, y, father, damage, speed, elemento);
 		this.showSplash = showSplash;
 		dir = (Math.random() * missDistance) - (missDistance / 2)
 				+ Auxi.point_direction(x, y, tar.getX(), tar.getY());
@@ -47,7 +46,7 @@ public class ProjectilePierce extends ProjectileParent {
 										"projectiles/water", Math.random()
 												* Math.PI,
 										Math.random() * 4 - 2,
-										Math.random() * 4 - 2, 5,0.5));
+										Math.random() * 4 - 2, 5, 0.5));
 					break;
 
 				default:
@@ -61,8 +60,8 @@ public class ProjectilePierce extends ProjectileParent {
 			distance--;
 			setDirection(dir);
 			setAngle(getDirection());
-			addX(speed * Math.cos(getDirection()));
-			addY(-speed * Math.sin(getDirection()));
+			addX(getSpeed() * Math.cos(getDirection()));
+			addY(-getSpeed() * Math.sin(getDirection()));
 		}
 	}
 
@@ -71,7 +70,4 @@ public class ProjectilePierce extends ProjectileParent {
 		remove();
 	}
 
-	public double getSpeed() {
-		return speed;
-	}
 }

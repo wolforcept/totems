@@ -8,7 +8,7 @@ import classes.picture.splashes.SplashParticle;
 
 public abstract class ProjectileParent extends DrawableObject {
 
-	private double direction, damage;
+	private double direction, damage, speed;
 	Elemento element;
 	private Tower father;
 	private double slowAmmount, burnDamage, bounceRange;
@@ -17,14 +17,8 @@ public abstract class ProjectileParent extends DrawableObject {
 	private boolean slower, burner, bouncer;
 	private int bounces, maxBounces;
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param speed
-	 * @param elemento
-	 */
 	public ProjectileParent(Data data, double x, double y, Tower father,
-			double damage, Elemento elemento) {
+			double damage, double speed, Elemento elemento) {
 
 		super(data, x, y);
 		setImages("projectiles/" + elemento.toString().toLowerCase());
@@ -38,8 +32,8 @@ public abstract class ProjectileParent extends DrawableObject {
 
 	public void parentStep() {
 		getData().addDrawableObject(
-				new SplashParticle(getData(), getX(), getY(), getImageName(), Math.PI
-						* Math.random(), 0, 0, 10, 0.5));
+				new SplashParticle(getData(), getX(), getY(), getImageName(),
+						Math.PI * Math.random(), 0, 0, 10, 0.5));
 	}
 
 	public abstract void step();
@@ -127,6 +121,14 @@ public abstract class ProjectileParent extends DrawableObject {
 		bounces = 0;
 		maxBounces = aBounceNumber;
 		bounceRange = aBounceRange;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+	public double getSpeed() {
+		return speed;
 	}
 
 }

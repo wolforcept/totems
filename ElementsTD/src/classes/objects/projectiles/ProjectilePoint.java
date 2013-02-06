@@ -13,12 +13,10 @@ import classes.picture.splashes.SplashParticle;
 public class ProjectilePoint extends ProjectileParent {
 
 	private Point tar;
-	private double speed;
 
 	public ProjectilePoint(Data data, double x, double y, Tower father,
 			double damage, Elemento elemento, double speed, Point tar) {
-		super(data, x, y, father, damage, elemento);
-		this.speed = speed;
+		super(data, x, y, father, damage, speed, elemento);
 		this.tar = tar;
 	}
 
@@ -27,10 +25,10 @@ public class ProjectilePoint extends ProjectileParent {
 
 		setDirection(Auxi.point_direction(getX(), getY(), tar.x, tar.y));
 
-		addX(Math.cos(getDirection()) * speed);
-		addY(-Math.sin(getDirection()) * speed);
+		addX(Math.cos(getDirection()) * getSpeed());
+		addY(-Math.sin(getDirection()) * getSpeed());
 
-		if (Auxi.point_distance(getX(), getY(), tar.x, tar.y) <= speed) {
+		if (Auxi.point_distance(getX(), getY(), tar.x, tar.y) <= getSpeed()) {
 			destroy();
 		}
 	}

@@ -10,14 +10,13 @@ import classes.objects.enemies.Enemy;
 
 public class ProjectileLink extends ProjectileParent {
 
-	private double speed, dir, distance;
+	private double dir, distance;
 	private boolean showSplash;
 
 	public ProjectileLink(Data data, double x, double y, Tower father,
 			Enemy tar, double speed, double damage, Elemento elemento,
 			boolean showSplash, double aDistance) {
-		super(data, x, y, father, damage, elemento);
-		this.speed = speed;
+		super(data, x, y, father, damage, speed, elemento);
 		this.showSplash = showSplash;
 		dir = Auxi.point_direction(x, y, tar.getX(), tar.getY());
 		distance = aDistance;
@@ -38,18 +37,14 @@ public class ProjectileLink extends ProjectileParent {
 			distance--;
 			setDirection(dir);
 			setAngle(getDirection());
-			addX(speed * Math.cos(getDirection()));
-			addY(-speed * Math.sin(getDirection()));
+			addX(getSpeed() * Math.cos(getDirection()));
+			addY(-getSpeed() * Math.sin(getDirection()));
 		}
 	}
 
 	@Override
 	public void destroy() {
 		remove();
-	}
-
-	public double getSpeed() {
-		return speed;
 	}
 
 }

@@ -8,12 +8,11 @@ import classes.objects.enemies.Enemy;
 
 public class ProjectileSuck extends ProjectileParent {
 
-	private double speed, dir;
+	private double dir;
 
-	public ProjectileSuck(Data data, Enemy tar, Tower father,
-			Tower tower, double speed, double damage, Elemento elemento) {
-		super(data, tar.getX(), tar.getY(), father, damage, elemento);
-		this.speed = speed;
+	public ProjectileSuck(Data data, Enemy tar, Tower father, Tower tower,
+			double speed, double damage, Elemento elemento) {
+		super(data, tar.getX(), tar.getY(), father, damage, speed, elemento);
 		addX(tar.getWidth() * 0.25 - 0.5 * Math.random() * tar.getWidth());
 		addY(tar.getHeight() * 0.25 - 0.5 * Math.random() * tar.getHeight());
 		dir = Auxi.point_direction(getX(), getY(), tower.getX(), tower.getY());
@@ -30,8 +29,8 @@ public class ProjectileSuck extends ProjectileParent {
 		} else {
 			setDirection(dir);
 			setAngle(getDirection());
-			addX(speed * Math.cos(getDirection()));
-			addY(-speed * Math.sin(getDirection()));
+			addX(getSpeed() * Math.cos(getDirection()));
+			addY(-getSpeed() * Math.sin(getDirection()));
 		}
 	}
 
@@ -40,7 +39,4 @@ public class ProjectileSuck extends ProjectileParent {
 		remove();
 	}
 
-	public double getSpeed() {
-		return speed;
-	}
 }

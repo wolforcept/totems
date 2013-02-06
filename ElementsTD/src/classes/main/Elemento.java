@@ -46,7 +46,7 @@ public enum Elemento {
 	INFERNO(		"FFF",	"Inferno Totem",		186,	40,		20.0,	100.0,	4,		TargetType.RANDOM,		true,		true,		0,		0,		5,		50,		1,		100),
 	GEM(			"EEE",	"Gem",					0,		0,		0.0,	0.0,	0,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),
 	TORNADO(		"AAA",	"Tornado Totem",		128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),
-	TORRENT(		"WWW",	"Torrent Totem",		158,	1,		10.0,	0.1,	1,		TargetType.RANDOM,		true,		false,		0,		0,		0,		0,		0,		0);
+	TORRENT(		"WWW",	"Torrent Totem",		256,	0,		1,		0.02,	4,		TargetType.RANDOM,		false,		false,		0,		0,		0,		0,		0,		0);
 //	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		REDO	TARGET TYPE				TRGT LOCK	SPLASH		SLOW	DUR		BURN	DUR		BNCS	RNG	
 
 	private int size;

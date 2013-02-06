@@ -17,7 +17,7 @@ public class ProjectileAura extends ProjectileParent {
 
 	public ProjectileAura(Data data, double x, double y, Tower father,
 			double damage, Elemento elemento) {
-		super(data, x, y, father, damage, elemento);
+		super(data, x, y, father, damage, 0, elemento);
 		maxTimer = father.getRange() * (0.9 + 0.1 * Math.random());
 		timer = father.getRange() * 2 / 5;
 		centrex = getX();
@@ -29,11 +29,11 @@ public class ProjectileAura extends ProjectileParent {
 		timer += speed;
 
 		double ag = Auxi.point_direction(getX1(), getY1(), centrex, centrey);
-		double hs = 5*Math.cos(ag);
-		double vs = -5*Math.sin(ag);
+		double hs = 5 * Math.cos(ag);
+		double vs = -5 * Math.sin(ag);
 		getData().addDrawableObject(
 				new SplashParticle(getData(), getX(), getY(), "particles/fire",
-						Math.PI * 2 * Math.random(), hs, vs, timer/20, 0.1));
+						Math.PI * 2 * Math.random(), hs, vs, timer / 20, 0.1));
 
 		setX(centrex + timer * Math.cos(timer));
 		setY(centrey + timer * Math.sin(timer));

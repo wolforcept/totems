@@ -142,8 +142,7 @@ public class Tower extends DrawableObject {
 						getTarget().getY(), getX(), getY())) {
 					firingAt = getTarget();
 				} else {
-					LinkedList<Enemy> list = getData()
-							.getEnemyListClone();
+					LinkedList<Enemy> list = getData().getEnemyListClone();
 					firingAt = pickTarget(list);
 				}
 			}
@@ -360,6 +359,13 @@ public class Tower extends DrawableObject {
 		case INFERNO:
 			ret = new ProjectileBomb(getData(), getX(), getY(), this, tar,
 					getProjectileSpeed(), getDamage(), getElement(), showSplash);
+			break;
+
+		case TORRENT:
+			ret.setAlpha((float) Math.random());
+			ret.addX(Math.random() * ret.getWidth() * 2 - ret.getWidth());
+			ret.addY(Math.random() * ret.getHeight() * 2 - ret.getHeight());
+			ret.setSpeed(Math.random() * 5 + 5);
 			break;
 
 		case WATER:
