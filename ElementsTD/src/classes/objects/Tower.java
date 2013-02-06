@@ -297,7 +297,7 @@ public class Tower extends DrawableObject {
 		case ZENITHTIDE:
 			ret = new ProjectilePierce(getData(), getX(), getY(), this, target,
 					getProjectileSpeed(), getDamage(), element, false,
-					getRange() / getProjectileSpeed(), 0.5);
+					getRange() / getProjectileSpeed(), 0.5, 0.5);
 			ret.setAlpha((float) (Math.random()));
 			break;
 
@@ -310,7 +310,8 @@ public class Tower extends DrawableObject {
 			if (chargesAvaliable > 0) {
 				ret = new ProjectilePierce(getData(), getX(), getY(), this,
 						target, getProjectileSpeed(), getDamage() * 10,
-						element, false, getRange() / getProjectileSpeed(), 0.5);
+						element, false, getRange() / getProjectileSpeed(), 0.5,
+						0);
 				chargesAvaliable -= 4 - getGear();
 			} else {
 				if (charge >= maxCharge) {
@@ -362,9 +363,12 @@ public class Tower extends DrawableObject {
 			break;
 
 		case TORRENT:
+			ret = new ProjectilePierce(getData(), getX(), getY(), this, target,
+					getProjectileSpeed(), getDamage(), element, false,
+					getRange(), 0.5,Math.random()*.5);
 			ret.setAlpha((float) Math.random());
-			ret.addX(Math.random() * ret.getWidth() * 2 - ret.getWidth());
-			ret.addY(Math.random() * ret.getHeight() * 2 - ret.getHeight());
+			ret.addX(Math.random() * ret.getWidth() - ret.getWidth() / 2);
+			ret.addY(Math.random() * ret.getHeight() - ret.getHeight() / 2);
 			ret.setSpeed(Math.random() * 5 + 5);
 			break;
 

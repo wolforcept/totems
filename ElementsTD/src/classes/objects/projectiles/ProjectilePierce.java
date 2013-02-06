@@ -11,19 +11,21 @@ import classes.picture.splashes.SplashParticle;
 
 public class ProjectilePierce extends ProjectileParent {
 
-	private double dir, distance;
+	private double distance;
 	private boolean showSplash;
 	private LinkedList<Long> dealtDamage;
 
 	public ProjectilePierce(Data data, double x, double y, Tower father,
 			Enemy tar, double speed, double damage, Elemento elemento,
-			boolean showSplash, double aDistance, double missDistance) {
+			boolean showSplash, double aDistance, double missDistance, double outterDistance) {
 		super(data, x, y, father, damage, speed, elemento);
 		this.showSplash = showSplash;
-		dir = (Math.random() * missDistance) - (missDistance / 2)
+		double dir = (Math.random() * missDistance) - (missDistance / 2)
 				+ Auxi.point_direction(x, y, tar.getX(), tar.getY());
-		distance = aDistance + (Math.random() * aDistance * 0.5);
+		distance = aDistance + (Math.random() * aDistance * outterDistance);
 		dealtDamage = new LinkedList<Long>();
+		setDirection(dir);
+		setAngle(getDirection());
 	}
 
 	@Override
@@ -57,9 +59,8 @@ public class ProjectilePierce extends ProjectileParent {
 		if (distance <= 0) {
 			destroy();
 		} else {
-			distance--;
-			setDirection(dir);
-			setAngle(getDirection());
+			distance-=getSpeed();
+			
 			addX(getSpeed() * Math.cos(getDirection()));
 			addY(-getSpeed() * Math.sin(getDirection()));
 		}

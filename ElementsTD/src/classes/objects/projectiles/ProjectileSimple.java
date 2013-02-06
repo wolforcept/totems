@@ -83,7 +83,8 @@ public class ProjectileSimple extends ProjectileParent {
 				}
 
 				if (!hasNewTar) {
-					tar = null;
+//					tar = null;
+					destroy();
 				}
 			}
 		} else {

@@ -25,6 +25,7 @@ public abstract class ProjectileParent extends DrawableObject {
 		this.father = father;
 		this.damage = damage;
 		this.element = elemento;
+		this.speed = speed;
 		slower = false;
 		burner = false;
 		bouncer = false;
