@@ -64,7 +64,7 @@ public class Tower extends DrawableObject {
 		targetType = e.targetType;
 		targetLockOn = e.targetLockOn;
 		element = e;
-		reload = 0;
+//		reload = 0;
 
 		burnDamage = e.burnDamage;
 		burnDuration = e.burnDuration;
@@ -364,7 +364,7 @@ public class Tower extends DrawableObject {
 
 		case TORRENT:
 			ret = new ProjectilePierce(getData(), getX(), getY(), this, target,
-					getProjectileSpeed(), getDamage(), element, false,
+					getProjectileSpeed(), getDamage(), element, true,
 					getRange(), 0.5,Math.random()*.5);
 			ret.setAlpha((float) Math.random());
 			ret.addX(Math.random() * ret.getWidth() - ret.getWidth() / 2);

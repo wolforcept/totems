@@ -11,7 +11,7 @@ import classes.objects.Tower;
 import classes.objects.enemies.Enemy;
 import classes.picture.splashes.SplashParticle;
 
-public class ProjectileSimple extends ProjectileParent {
+public class ProjectileSimple extends ProjectileParent implements ProjectileNeedSplashes{
 
 	private Enemy tar;
 	private boolean showSplash;

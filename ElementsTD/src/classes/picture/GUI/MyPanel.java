@@ -247,13 +247,23 @@ public class MyPanel extends JPanel {
 					(int) box.getY1(), g);
 		}
 
-		{// DRAW ELEMENT BUTTONS
+		{// DRAW BUTTONS
 			Point2D yellowPoint = null;
 			Dimension yellowDimension = null;
 			LinkedList<DrawableObject> tempStaticList = data
 					.getStaticListClone();
 			for (DrawableObject p : tempStaticList) {
 				drawImage(p, g, true);
+
+				if (p instanceof GraphicsButton) {
+
+					int quality = data.getGraphicsQuality();
+					g.setFont(fontMonospaced);
+					g.setColor(Data.COLOR_WHITE);
+					g.drawString("" + quality, (int) p.getX()+18,
+							(int) p.getY());
+
+				}
 				if (p instanceof TowerButton) {
 					if (data.getSelectedElement() == ((TowerButton) p)
 							.getElement()) {

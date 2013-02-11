@@ -61,17 +61,19 @@ public class ProjectileBomb extends ProjectileParent {
 			} else {
 				LinkedList<Enemy> list = getData().getEnemyListClone();
 
+				list.remove(tar);
+
 				Collections.shuffle(list);
 
 				boolean hasNewTar = false;
 				for (Enemy e : list) {
-					if (tar.getId() != e.getId()) {
-						if (getBounceRange() > Auxi.point_distance(getX(),
-								getY(), e.getX(), e.getY())) {
-							tar = e;
-							hasNewTar = true;
-						}
+					// if (tar.getId() != e.getId()) {
+					if (getBounceRange() > Auxi.point_distance(getX(), getY(),
+							e.getX(), e.getY())) {
+						tar = e;
+						hasNewTar = true;
 					}
+					// }
 				}
 
 				if (!hasNewTar) {

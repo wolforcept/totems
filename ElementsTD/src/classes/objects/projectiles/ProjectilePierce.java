@@ -9,7 +9,7 @@ import classes.objects.Tower;
 import classes.objects.enemies.Enemy;
 import classes.picture.splashes.SplashParticle;
 
-public class ProjectilePierce extends ProjectileParent {
+public class ProjectilePierce extends ProjectileParent implements ProjectileNeedSplashes {
 
 	private double distance;
 	private boolean showSplash;

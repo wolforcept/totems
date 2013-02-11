@@ -30,6 +30,8 @@ import classes.picture.splashes.SplashText;
 
 public class Data {
 
+	// STATIC
+
 	private static final double STARTING_HEALTH = 15,
 			STARTING_HEALTH_GAIN = 0.4, HEALTH_GAIN_INCREMENT = 0.002;
 	private static final int STARTING_REWARD = 1, REWARD_INCREMENT = 2;
@@ -37,7 +39,8 @@ public class Data {
 	public static final float SELLING_REFUND = .75f;
 	public static final long SERIAL_VERSION = 100055L;
 	public static final Dimension WINDOW_SIZE = new Dimension(1024, 768);
-	public static final int FREQUENCY = 60, STARTING_SHARDS = 200000;
+	public static final int FREQUENCY = 60, STARTING_SHARDS = 200000,
+			MAX_GRAPHIC_QUALITY = 5;
 	public static final double AURA_RADIUS = 60;
 	public static Font font;
 
@@ -61,6 +64,17 @@ public class Data {
 			COLOR_ENEMY_FILE = new Color(96, 198, 214, 150), //
 			COLOR_ENEMY_FILE_TEXT = new Color(196, 255, 255, 180) //
 			;
+
+	public static Animation getAnimation(String s) {
+		if (imageMap.containsKey(s)) {
+			return imageMap.get(s);
+		} else {
+			System.err.println("Animation <" + s
+					+ "> not found int imageHashMap");
+			System.exit(0);
+			return null;
+		}
+	}
 
 	public void loadImages() {
 		System.out.println("Started Loading Images");
@@ -135,6 +149,7 @@ public class Data {
 		getDrawableImage(1, 0.75, "buttons/focusgray", true);
 		getDrawableImage(1, 0.75, "buttons/autotrue", true);
 		getDrawableImage(1, 0.75, "buttons/autofalse", true);
+		getDrawableImage(1, 0.75, "buttons/graphics", true);
 
 		// Enemies
 		getDrawableImage(28, 0.75, "enemies/weeko", true);
@@ -219,17 +234,6 @@ public class Data {
 				isRotatable);
 	}
 
-	public static Animation getAnimation(String s) {
-		if (imageMap.containsKey(s)) {
-			return imageMap.get(s);
-		} else {
-			System.err.println("Animation <" + s
-					+ "> not found int imageHashMap");
-			System.exit(0);
-			return null;
-		}
-	}
-
 	private void getTowerDrawableImage(int length, double speed, String a,
 			boolean isRotatable) {
 		try {
@@ -290,7 +294,8 @@ public class Data {
 	private long currentId;
 	private long selectedTowerId;
 	private TowerBox currentBox;
-	private boolean fancy_graphics;
+
+	private int graphicsQuality;
 
 	public Data(int p) {
 
@@ -325,7 +330,7 @@ public class Data {
 
 		currentId = 0;
 
-		fancy_graphics = true;
+		graphicsQuality = MAX_GRAPHIC_QUALITY;
 
 		creatingPath = true;
 
@@ -353,7 +358,8 @@ public class Data {
 			pathMarkList.add((PathMark) o);
 			pathMarkLock.unlock();
 		} else if (o instanceof Splash) {
-			if (fancy_graphics || (o instanceof SplashText)) {
+			if ((graphicsQuality > Math.random() * MAX_GRAPHIC_QUALITY)
+					|| (o instanceof SplashText)) {
 				splashLock.lock();
 				splashList.add((Splash) o);
 				splashLock.unlock();
@@ -446,7 +452,7 @@ public class Data {
 	public LinkedList<DrawableObject> getStaticListClone() {
 		try {
 			staticLock.lock();
-			return staticList;
+			return new LinkedList<DrawableObject>(staticList);
 		} finally {
 			staticLock.unlock();
 		}
@@ -668,13 +674,16 @@ public class Data {
 		return autoWave;
 	}
 
-	public void toggleFancyGraphics() {
+	public void changeGraphicsQuality() {
 
-		fancy_graphics = fancy_graphics ? false : true;
+		graphicsQuality--;
 
+		if (graphicsQuality < 0) {
+			graphicsQuality = MAX_GRAPHIC_QUALITY;
+		}
 	}
 
-	public boolean isFancyGraphics() {
-		return fancy_graphics;
+	public int getGraphicsQuality() {
+		return graphicsQuality;
 	}
 }
