@@ -1,6 +1,7 @@
 package classes.main;
 
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -55,7 +56,7 @@ public class Control extends Thread {
 		data.addDrawableObject(new AutoWaveButton(data, 688, 22 + 32));
 
 		data.addDrawableObject(new GraphicsButton(data, 788, 22 + 32));
-		
+
 		data.createPathMaker(new Path(data.getPathType()));
 
 		System.out.println("Buttons set up.");
@@ -89,8 +90,7 @@ public class Control extends Thread {
 			}
 		});
 
-		panel.addMouseListener(new MouseListener() {
-
+		panel.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent e) {
 				switch (e.getButton()) {
 
@@ -101,18 +101,6 @@ public class Control extends Thread {
 					rightMouseReleased = true;
 					break;
 				}
-			}
-
-			public void mousePressed(MouseEvent arg0) {
-			}
-
-			public void mouseExited(MouseEvent arg0) {
-			}
-
-			public void mouseEntered(MouseEvent arg0) {
-			}
-
-			public void mouseClicked(MouseEvent e) {
 			}
 		});
 
@@ -285,11 +273,6 @@ public class Control extends Thread {
 								data.addDrawableObject(new SplashAnimation(
 										data, toAdd.getX() - 32,
 										toAdd.getY() - 32, "green_circle"));
-								data.addShards(-Elemento.LIFE.getCost());
-								data.addDrawableObject(new SplashText(data,
-										(int) toAdd.getX(), (int) toAdd.getY(),
-										"-" + Elemento.LIFE.getCost()
-												+ " Shards", true, Color.RED));
 							}
 
 							System.out.println(selectedElement + "created.");

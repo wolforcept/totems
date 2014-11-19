@@ -499,23 +499,13 @@ public class MyPanel extends JPanel {
 		}
 
 		if (o instanceof ProjectileBlast) {
-			// double c = ((ProjectileBlast) o).getCounter();
-			// double x = (o.getWidth() * c / 2);
-			// double y = (o.getHeight() * c / 2);
-			// if (!o.isRemoved())
-			// drawImage(o.getCurrentImage(), (int) o.getX() - x,
-			// (int) o.getY() - y, g, c, c, -o.getAngle(),
-			// o.getAlpha(), true);
-
 			double scale = ((ProjectileBlast) o).getCounter();
 			System.out.println("scale " + scale);
 			int w = o.getWidth();
 			int h = o.getHeight();
-			double xx = x + w / 2 - scale * w/2;
-			double yy = y + w / 2 - scale * h/2;
-			drawImage(o.getCurrentImage(), xx, yy, g, scale, scale, 0,
-					1);
-
+			double xx = x + w / 2 - scale * w / 2;
+			double yy = y + w / 2 - scale * h / 2;
+			drawImage(o.getCurrentImage(), xx, yy, g, scale, scale, 0, 1);
 		} else {
 			if (!o.isRemoved())
 				drawImage(o.getCurrentImage(), x, y, g, 1, 1, -o.getAngle(),

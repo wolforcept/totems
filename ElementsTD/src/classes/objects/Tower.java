@@ -64,7 +64,7 @@ public class Tower extends DrawableObject {
 		targetType = e.targetType;
 		targetLockOn = e.targetLockOn;
 		element = e;
-//		reload = 0;
+		// reload = 0;
 
 		burnDamage = e.burnDamage;
 		burnDuration = e.burnDuration;
@@ -297,7 +297,7 @@ public class Tower extends DrawableObject {
 		case ZENITHTIDE:
 			ret = new ProjectilePierce(getData(), getX(), getY(), this, target,
 					getProjectileSpeed(), getDamage(), element, false,
-					getRange() / getProjectileSpeed(), 0.5, 0.5);
+					getRange(), 0.5, 0.5);
 			ret.setAlpha((float) (Math.random()));
 			break;
 
@@ -310,8 +310,7 @@ public class Tower extends DrawableObject {
 			if (chargesAvaliable > 0) {
 				ret = new ProjectilePierce(getData(), getX(), getY(), this,
 						target, getProjectileSpeed(), getDamage() * 10,
-						element, false, getRange() / getProjectileSpeed(), 0.5,
-						0);
+						element, false, getRange(), 0.5, 0);
 				chargesAvaliable -= 4 - getGear();
 			} else {
 				if (charge >= maxCharge) {
@@ -365,7 +364,7 @@ public class Tower extends DrawableObject {
 		case TORRENT:
 			ret = new ProjectilePierce(getData(), getX(), getY(), this, target,
 					getProjectileSpeed(), getDamage(), element, true,
-					getRange(), 0.5,Math.random()*.5);
+					getRange(), 0.5, Math.random() * .5);
 			ret.setAlpha((float) Math.random());
 			ret.addX(Math.random() * ret.getWidth() - ret.getWidth() / 2);
 			ret.addY(Math.random() * ret.getHeight() - ret.getHeight() / 2);
@@ -519,86 +518,53 @@ public class Tower extends DrawableObject {
 		reload = d;
 	}
 
-	public void upgrade(final Elemento elementPlus) {
+	public void upgrade(final Elemento new_ele) {
 
-		if (elementPlus != null) {
-			if (elementPlus.getCost() > getData().getShards()) {
-				getData().showMessage("NOT ENOUGH SHARDS", false,
-						Data.COLOR_RED);
-			} else {
+		if (new_ele == null)
+			return;
 
-				final Elemento myElement = element;
+		System.out.println("Upgrading from " + element + " with " + new_ele);
 
-				System.out.println("Upgrading from " + myElement + " with "
-						+ elementPlus);
-
-				if (elementPlus == Elemento.LIFE) {
-					if (myElement != Elemento.LIFE) {
-						// if (gear < 3) {
-						gear++;
-						getData().addDrawableObject(
-								new SplashText(getData(),
-										getData().getMouse().x, getData()
-												.getMouse().y,
-										"Totem Gear Raised to " + gear, false,
-										Data.COLOR_WHITE));
-						getData().addShards(-Elemento.LIFE.getCost());
-						// } else {
-						// getData().addDrawableObject(
-						// new SplashText(getData(), getData().getMouse().x,
-						// getData().getMouse().y,
-						// "Totem Gear already at Maximum"));
-						// }
-					} else {
-						getData().addDrawableObject(
-								new SplashText(getData(),
-										getData().getMouse().x, getData()
-												.getMouse().y,
-										"Life totem has no gear", false,
-										Data.COLOR_RED));
-					}
-				} else {
-
-					boolean validElement = false;
-					for (int i = 0; i < myElement.elementCode.length(); i++) {
-						if (myElement.elementCode.charAt(i) == '0') {
-							validElement = true;
-						}
-					}
-					if (!validElement) {
-						getData().addDrawableObject(
-								new SplashText(getData(),
-										getData().getMouse().x, getData()
-												.getMouse().y,
-										"Invalid Element Upgrade", false,
-										Data.COLOR_RED));
-						System.err.println("Invalid Upgrade");
-					} else {
-
-						Elemento newElement = Elemento.getUpgradedElement(
-								myElement, elementPlus);
-
-						if (newElement == null) {
-							getData().addDrawableObject(
-									new SplashText(getData(), getData()
-											.getMouse().x,
-											getData().getMouse().y,
-											"Invalid Element Upgrade", false,
-											Data.COLOR_RED));
-						} else {
-							getData().addShards(-newElement.getCost());
-							getSpecs(newElement);
-							getData().addDrawableObject(
-									new SplashText(getData(), getData()
-											.getMouse().x,
-											getData().getMouse().y,
-											newElement.name + " created",
-											false, Data.COLOR_WHITE));
-						}
-					}
-				}
+		if (new_ele == Elemento.LIFE) {
+			if (element == Elemento.LIFE) {
+				getData().showErrorMessage("LIFE TOTEM CAN NOT BE UPGRADED");
+				return;
 			}
+			// if (gear < 3) {
+			gear++;
+			getData().addDrawableObject(
+					new SplashText(getData(), getData().getMouse().x, getData()
+							.getMouse().y, "Totem Gear Raised to " + gear,
+							false, Data.COLOR_WHITE));
+			getData().addShards(-Elemento.LIFE.getCost());
+			return;
+
 		}
+
+		if (!element.elementCode.contains("0")) {
+			getData().showErrorMessage("INVALID ELEMENT UPGRADE");
+			return;
+		}
+
+		Elemento newElement = Elemento.getUpgradedElement(element, new_ele);
+
+		if (newElement == null) {
+			getData().showErrorMessage("INVALID ELEMENT UPGRADE");
+			return;
+		}
+
+		if (newElement.getCost() > getData().getShards()) {
+			getData().showErrorMessage("NOT ENOUGH SHARDS");
+			return;
+		}
+
+		getData().addShards(-newElement.getCost());
+		getSpecs(newElement);
+		getData().addDrawableObject(
+				new SplashText(getData(), getData().getMouse().x, getData()
+						.getMouse().y, newElement.name + " created", false,
+						Data.COLOR_WHITE));
+
 	}
 
 	public Enemy getTarget() {
@@ -689,6 +655,8 @@ public class Tower extends DrawableObject {
 	}
 
 	public void sell() {
+		if (element == Elemento.LIFE)
+			return;
 		int refund = (int) (Data.SELLING_REFUND * getElement().getCost());
 		if (refund > 0) {
 			getData().addShards(refund);
@@ -706,5 +674,4 @@ public class Tower extends DrawableObject {
 		}
 		remove();
 	}
-
 }

@@ -32,14 +32,14 @@ public class Data {
 
 	// STATIC
 
-	private static final double STARTING_HEALTH = 15,
-			STARTING_HEALTH_GAIN = 0.4, HEALTH_GAIN_INCREMENT = 0.002;
+	private static final double STARTING_HEALTH = 25,
+			STARTING_HEALTH_GAIN = 0.4, HEALTH_GAIN_INCREMENT = 0.0015;
 	private static final int STARTING_REWARD = 1, REWARD_INCREMENT = 2;
 	private static HashMap<String, Animation> imageMap;
 	public static final float SELLING_REFUND = .75f;
 	public static final long SERIAL_VERSION = 100055L;
 	public static final Dimension WINDOW_SIZE = new Dimension(1024, 768);
-	public static final int FREQUENCY = 60, STARTING_SHARDS = 200000,
+	public static final int FREQUENCY = 60, STARTING_SHARDS = 20,
 			MAX_GRAPHIC_QUALITY = 5;
 	public static final double AURA_RADIUS = 60;
 	public static Font font;
@@ -685,5 +685,9 @@ public class Data {
 
 	public int getGraphicsQuality() {
 		return graphicsQuality;
+	}
+
+	public void showErrorMessage(String string) {
+		showMessage(string, false, Data.COLOR_RED);
 	}
 }

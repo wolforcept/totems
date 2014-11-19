@@ -9,7 +9,8 @@ import classes.objects.Tower;
 import classes.objects.enemies.Enemy;
 import classes.picture.splashes.SplashParticle;
 
-public class ProjectilePierce extends ProjectileParent implements ProjectileNeedSplashes {
+public class ProjectilePierce extends ProjectileParent implements
+		ProjectileNeedSplashes {
 
 	private double distance;
 	private boolean showSplash;
@@ -17,7 +18,8 @@ public class ProjectilePierce extends ProjectileParent implements ProjectileNeed
 
 	public ProjectilePierce(Data data, double x, double y, Tower father,
 			Enemy tar, double speed, double damage, Elemento elemento,
-			boolean showSplash, double aDistance, double missDistance, double outterDistance) {
+			boolean showSplash, double aDistance, double missDistance,
+			double outterDistance) {
 		super(data, x, y, father, damage, speed, elemento);
 		this.showSplash = showSplash;
 		double dir = (Math.random() * missDistance) - (missDistance / 2)
@@ -59,8 +61,8 @@ public class ProjectilePierce extends ProjectileParent implements ProjectileNeed
 		if (distance <= 0) {
 			destroy();
 		} else {
-			distance-=getSpeed();
-			
+			distance -= getSpeed();
+
 			addX(getSpeed() * Math.cos(getDirection()));
 			addY(-getSpeed() * Math.sin(getDirection()));
 		}

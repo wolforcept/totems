@@ -32,7 +32,7 @@ public class Enemy extends DrawableObject {
 		this.health = maxHealth = health * type.health;
 		this.path = path;
 		this.reward = reward;
-		this.xpReward = type.xp * xpReward;
+		this.xpReward = type.xp * expReward;
 		lastHit = null;
 		burningDuration = 0;
 		dead = false;
@@ -161,6 +161,7 @@ public class Enemy extends DrawableObject {
 							+ reward + " Shards", true, Color.GREEN));
 			if (lastHit != null) {
 				lastHit.addExp(xpReward);
+				System.out.println("Enemy.death()");
 			}
 			System.out.println("Death of " + getClass().getSimpleName()
 					+ " by " + lastHit.getElement() + " for " + reward
