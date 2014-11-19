@@ -260,7 +260,7 @@ public class MyPanel extends JPanel {
 					int quality = data.getGraphicsQuality();
 					g.setFont(fontMonospaced);
 					g.setColor(Data.COLOR_WHITE);
-					g.drawString("" + quality, (int) p.getX()+18,
+					g.drawString("" + quality, (int) p.getX() + 18,
 							(int) p.getY());
 
 				}
@@ -508,8 +508,13 @@ public class MyPanel extends JPanel {
 			// o.getAlpha(), true);
 
 			double scale = ((ProjectileBlast) o).getCounter();
-
-			drawImage(o.getCurrentImage(), x, y, g, scale, scale, 0, 1);
+			System.out.println("scale " + scale);
+			int w = o.getWidth();
+			int h = o.getHeight();
+			double xx = x + w / 2 - scale * w/2;
+			double yy = y + w / 2 - scale * h/2;
+			drawImage(o.getCurrentImage(), xx, yy, g, scale, scale, 0,
+					1);
 
 		} else {
 			if (!o.isRemoved())
