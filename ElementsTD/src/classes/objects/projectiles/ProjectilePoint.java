@@ -38,7 +38,9 @@ public class ProjectilePoint extends ProjectileParent {
 		LinkedList<Enemy> tempList = getData().getEnemyListClone();
 		for (Enemy e : tempList) {
 			if (Auxi.collides(this, e)) {
-				e.hurt(getFather(), getDamage(), getElement(), true);
+				e.hurt(getFather(), getDamage(), getElement(), true,
+						getSlowDuration(), getSlowAmmount(), getBurnDuration(),
+						getBurnDamage());
 				switch (getElement()) {
 				case RAIN:
 					for (int i = 0; i < 5; i++) {

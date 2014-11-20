@@ -9,7 +9,8 @@ import classes.objects.Tower;
 import classes.objects.enemies.Enemy;
 import classes.picture.splashes.SplashParticle;
 
-public class ProjectileMine extends ProjectileParent implements ProjectileNeedSplashes {
+public class ProjectileMine extends ProjectileParent implements
+		ProjectileNeedSplashes {
 
 	private double tarx, tary;
 	private boolean showSplash;
@@ -75,14 +76,10 @@ public class ProjectileMine extends ProjectileParent implements ProjectileNeedSp
 	}
 
 	private void collide(Enemy tar) {
-		tar.hurt(getFather(), getDamage(), getElement(), showSplash);
+		tar.hurt(getFather(), getDamage(), getElement(), showSplash,
+				getSlowDuration(), getSlowAmmount(), getBurnDuration(),
+				getBurnDamage());
 
-		if (isSlower()) {
-			tar.reduceSpeed(getSlowDuration(), getSlowAmmount());
-		}
-		if (isBurner()) {
-			tar.setOnFire(getBurnDuration(), getBurnDamage());
-		}
 		remove();
 	}
 

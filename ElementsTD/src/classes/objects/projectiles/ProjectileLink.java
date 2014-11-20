@@ -28,7 +28,9 @@ public class ProjectileLink extends ProjectileParent {
 		LinkedList<Enemy> tempList = getData().getEnemyListClone();
 		for (Enemy enemy : tempList) {
 			if (Auxi.collides(this, enemy)) {
-				enemy.hurt(getFather(), getDamage(), getElement(), showSplash);
+				enemy.hurt(getFather(), getDamage(), getElement(), showSplash,
+						getSlowDuration(), getSlowAmmount(), getBurnDuration(),
+						getBurnDamage());
 			}
 		}
 		if (distance <= 0) {

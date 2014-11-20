@@ -18,8 +18,8 @@ public class ProjectileAura extends ProjectileParent {
 	public ProjectileAura(Data data, double x, double y, Tower father,
 			double damage, Elemento elemento) {
 		super(data, x, y, father, damage, 0, elemento);
-		maxTimer = father.getRange() * (0.9 + 0.1 * Math.random());
-		timer = father.getRange() * 2 / 5;
+		maxTimer = father.stats.getRange() * (0.9 + 0.1 * Math.random());
+		timer = father.stats.getRange() * 2 / 5;
 		centrex = getX();
 		centrey = getY();
 	}
@@ -41,7 +41,9 @@ public class ProjectileAura extends ProjectileParent {
 		LinkedList<Enemy> tempList = getData().getEnemyListClone();
 		for (Enemy e : tempList) {
 			if (Auxi.collides(e, this)) {
-				e.hurt(getFather(), getDamage(), getElement(), false);
+				e.hurt(getFather(), getDamage(), getElement(), false,
+						getSlowDuration(), getSlowAmmount(), getBurnDuration(),
+						getBurnDamage());
 			}
 		}
 		if (timer >= maxTimer) {

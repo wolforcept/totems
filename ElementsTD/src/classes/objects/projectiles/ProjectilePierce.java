@@ -38,7 +38,8 @@ public class ProjectilePierce extends ProjectileParent implements
 			if (Auxi.collides(this, enemy)) {
 				if (!dealtDamage.contains(enemy.getId())) {
 					enemy.hurt(getFather(), getDamage(), getElement(),
-							showSplash);
+							showSplash, getSlowDuration(), getSlowAmmount(),
+							getBurnDuration(), getBurnDamage());
 					dealtDamage.add(enemy.getId());
 				}
 				// PARTICLES:

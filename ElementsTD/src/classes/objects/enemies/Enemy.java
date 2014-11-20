@@ -160,7 +160,7 @@ public class Enemy extends DrawableObject {
 					new SplashText(getData(), (int) getX(), (int) getY(), "+"
 							+ reward + " Shards", true, Color.GREEN));
 			if (lastHit != null) {
-				lastHit.addExp(xpReward);
+				lastHit.stats.addExp(xpReward);
 				System.out.println("Enemy.death()");
 			}
 			System.out.println("Death of " + getClass().getSimpleName()
@@ -188,7 +188,8 @@ public class Enemy extends DrawableObject {
 	}
 
 	public void hurt(Tower tower, double damage, Elemento type,
-			boolean showSplash) {
+			boolean showSplash, int slowDuration, double slowAmmount,
+			int burnDuration, double burnDamage) {
 
 		lastHit = tower;
 
@@ -236,6 +237,9 @@ public class Enemy extends DrawableObject {
 
 		hurt(dmg[0] + dmg[1] + dmg[2] + dmg[3]);
 
+		reduceSpeed(slowDuration, slowAmmount);
+		setOnFire(burnDuration, burnDamage);
+
 		if (showSplash) {
 			getData().addDrawableObject(
 					new SplashText(getData(), getX(), getY(), ""
@@ -244,7 +248,7 @@ public class Enemy extends DrawableObject {
 		}
 	}
 
-	public void setOnFire(int duration, double damage) {
+	private void setOnFire(int duration, double damage) {
 		burningDuration = duration;
 		burningDamage = damage;
 	}
@@ -255,7 +259,7 @@ public class Enemy extends DrawableObject {
 	 * @param ammount
 	 *            in %
 	 */
-	public void reduceSpeed(int slowDuration, double ammount) {
+	private void reduceSpeed(int slowDuration, double ammount) {
 		reducedSpeedDuration = slowDuration;
 		reducedSpeed = speed * ammount;
 	}

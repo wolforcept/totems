@@ -1,9 +1,7 @@
 package classes.main;
 
-import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -25,7 +23,6 @@ import classes.picture.GUI.towerGUI.TowerBox;
 import classes.picture.GUI.towerGUI.TowerButton;
 import classes.picture.splashes.Splash;
 import classes.picture.splashes.SplashAnimation;
-import classes.picture.splashes.SplashText;
 
 public class Control extends Thread {
 
@@ -284,7 +281,7 @@ public class Control extends Thread {
 					 * UPGRADE TOWER
 					 */
 
-					if (towerAtMouse.getGear() == 3
+					if (towerAtMouse.stats.getGear() == 3
 							&& data.getSelectedElement().equals(Elemento.LIFE)) {
 						data.showMessage("Totem Gear Already at Maximum",
 								false, Data.COLOR_RED);

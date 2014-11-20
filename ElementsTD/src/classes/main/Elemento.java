@@ -7,8 +7,8 @@ public enum Elemento {
 //	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		REDO	TARGET TYPE				TRGT LOCK	SPLASH		SLOW	DUR		BURN	DUR		BNCS	RNG
 	LIFE(			"000",	"Totem of Life",		0,		0,		0.0,	0,		0,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),
 	WIND(			"A00",	"Totem of Wind",		128,	60,		3.0, 	10.0, 	1,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		3,		100),
-	FIRE(			"F00",	"Fire Totem",			128, 	100, 	10.0, 	0.0, 	1,		TargetType.BURN,		false,		false,		0,		0,		0.5,	500,	0,		0),
-	WATER(			"W00", 	"Water Totem",			128,	1,		10.0,	0.5,	1,		TargetType.HEALTHY,		true,		false,		0,		0,		0,		0,		0,		0),
+	FIRE(			"F00",	"Fire Totem",			128, 	120, 	10.0, 	0.0, 	1,		TargetType.BURN,		false,		false,		0,		0,		0.1,	200,	0,		0),
+	WATER(			"W00", 	"Water Totem",			128,	1,		10.0,	0.2,	1,		TargetType.HEALTHY,		true,		false,		0,		0,		0,		0,		0,		0),
 	EARTH(			"E00",	"Earth Totem",			128, 	60, 	10.0,	20.0, 	1, 		TargetType.RANDOM,		true,		true,		5,		50,		0,		0,		0,		0),
 //	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		REDO	TARGET TYPE				TRGT LOCK	SPLASH		SLOW	DUR		BURN	DUR		BNCS	RNG
 	STEAM(			"FW0",	"Steam Totem",			128,	40,		10.0,	10.0,	1,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),

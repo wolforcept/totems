@@ -26,17 +26,19 @@ import classes.picture.splashes.SplashText;
 
 public class Tower extends DrawableObject {
 
-	private double range, reload, maxReload, projectileSpeed, damage,
-			burnDamage, slowAmmount, bounceRange;
+	private static final int BIOMASS_CHARGEUSE = 4, PLASMA_CHARGEUSE = 5;
+
+	public TowerStats stats;
+
 	private Elemento element;
+
 	private boolean mouseOnMe, targetLockOn, showSplash;
-	private int gear, exp, bounceNumber, burnDuration, slowDuration, redo;
+
 	private Enemy target;
-	private HashMap<AuraType, Double> auras;
 	private TargetType targetType;
-	private HashMap<AuraType, LinkedList<Aura>> buffs;
+
+	private HashMap<AuraType, Double> auras;
 	private HashMap<Long, Point> links;
-	private int charge, maxCharge, chargesAvaliable;
 
 	public enum TargetType {
 		/* AVALIABLE */HEALTHY, UNHEALTHY, FAST, SLOW, RANDOM, //
@@ -45,63 +47,37 @@ public class Tower extends DrawableObject {
 
 	public Tower(Data data, int x, int y, Elemento e) {
 		super(data, x, y);
+
 		mouseOnMe = false;
 		auras = new HashMap<AuraType, Double>();
 		links = new HashMap<Long, Point>();
-		getSpecs(e);
-		gear = 1;
-		exp = 0;
+		setStats(e);
 		System.out.println("Created tower with id: " + getId());
 	}
 
-	private void getSpecs(Elemento e) {
-		gear = 1;
-		range = e.range;
-		maxReload = e.maxReload;
-		projectileSpeed = e.projectileSpeed;
-		damage = e.damage;
-		redo = e.redo;
+	private void setStats(Elemento e) {
+		element = e;
 		targetType = e.targetType;
 		targetLockOn = e.targetLockOn;
-		element = e;
-		// reload = 0;
-
-		burnDamage = e.burnDamage;
-		burnDuration = e.burnDuration;
-		slowAmmount = e.slowAmmount;
-		slowDuration = e.slowDuration;
-		bounceNumber = e.bounceNumber;
-		bounceRange = e.bounceRange;
 		showSplash = e.showSplash;
-		charge = 0;
-		maxCharge = 100;
-		chargesAvaliable = 0;
+
+		stats = new TowerStats()//
+				.setRange(e.range) //
+				.setReload(0) //
+				.setMaxReload(e.maxReload) //
+				.setProjectileSpeed(e.projectileSpeed) //
+				.setDamage(e.damage) //
+				.setBurnDamage(e.burnDamage) //
+				.setBurnDuration(e.burnDuration) //
+				.setSlowAmmount(e.slowAmmount) //
+				.setSlowDuration(e.slowDuration) //
+				.setBounceNumber(e.bounceNumber) //
+				.setBounceRange(e.bounceRange) //
+				.setRedo(e.redo);
+
+		Aura.setAuras(auras, e);
 
 		setImages(e.toString().toLowerCase());
-
-		buffs = new HashMap<Aura.AuraType, LinkedList<Aura>>();
-
-		auras.clear();
-		switch (e) {
-		case WIND:
-			auras.put(AuraType.RANGE, 20.0);
-			break;
-
-		case BLAZE:
-			auras.put(AuraType.DAMAGE, 10.0);
-			break;
-
-		case MUD:
-			auras.put(AuraType.SLOW_AMMOUNT, 50.0);
-			auras.put(AuraType.SLOW_DURATION, 50.0);
-			break;
-
-		case GEM:
-			auras.put(AuraType.DAMAGE, 100.0);
-			break;
-		default:
-			break;
-		}
 		getData().updateBuffs();
 		updateBuffs(getData().getTowerListClone());
 		new Thread() {
@@ -114,18 +90,18 @@ public class Tower extends DrawableObject {
 	public void step() {
 
 		nextImage();
-		decrementReload();
+		stats.decrementReload();
 		if (getElement() != Elemento.LIFE) {
 
-			for (int i = 0; i < getRedo(); i++) {
+			for (int i = 0; i < stats.getRedo(); i++) {
 				fire();
 			}
 			if (classes.main.Control.mouseIsOnTop(getData(), this)) {
 				getData().setDrawOnMouse(true);
-				showRange(true);
+				setMouseOnMe(true);
 				getData().setStringToDraw(getStringToDrawWhenMouseOver());
 			} else {
-				showRange(false);
+				setMouseOnMe(false);
 			}
 
 		}
@@ -138,7 +114,7 @@ public class Tower extends DrawableObject {
 			if (getElement().equals(Elemento.ENDSTORM)) {
 				firingAt = getTarget();
 			} else {
-				if (getRange() >= Auxi.point_distance(getTarget().getX(),
+				if (stats.getRange() >= Auxi.point_distance(getTarget().getX(),
 						getTarget().getY(), getX(), getY())) {
 					firingAt = getTarget();
 				} else {
@@ -151,12 +127,12 @@ public class Tower extends DrawableObject {
 			firingAt = pickTarget(list);
 		}
 
-		if (getReload() <= 0) {
+		if (stats.getReload() <= 0) {
 
 			if (getElement() == Elemento.TROPICALEQUINOX) {
 
 				if (getData().getEnemyListClone().isEmpty()) {
-					setReload(0);
+					stats.setReload(0);
 				} else {
 					LinkedList<PathMark> list = getData()
 							.getPathMarkListClone();
@@ -178,7 +154,7 @@ public class Tower extends DrawableObject {
 								}
 							}
 							if (!collides) {
-								if (getRange() > Auxi.point_distance(
+								if (stats.getRange() > Auxi.point_distance(
 										pathMark.getX(), pathMark.getY(),
 										getX(), getY())
 										&& pathMark.getX() > 0
@@ -197,7 +173,7 @@ public class Tower extends DrawableObject {
 								new ProjectileMine(getData(), getX(), getY(),
 										this, xx, yy, 1000, 3, 50,
 										getElement(), showSplash));
-						setReload(getMaxReload());
+						stats.setReload(stats.getMaxReload());
 					}
 				}
 			} else if (firingAt != null) {
@@ -205,7 +181,7 @@ public class Tower extends DrawableObject {
 				if (p != null) {
 					getData().addDrawableObject(p);
 				}
-				setReload(getMaxReload());
+				stats.setReload(stats.getMaxReload());
 			}
 		}
 	}
@@ -265,8 +241,8 @@ public class Tower extends DrawableObject {
 				if (getElement().equals(Elemento.ENDSTORM)) {
 					return e;
 				}
-				if (getRange() >= Auxi.point_distance(getX(), getY(), e.getX(),
-						e.getY())) {
+				if (stats.getRange() >= Auxi.point_distance(getX(), getY(),
+						e.getX(), e.getY())) {
 					return e;
 				}
 			}
@@ -279,8 +255,8 @@ public class Tower extends DrawableObject {
 		this.target = tar;
 
 		ProjectileParent ret = new ProjectileSimple(getData(), getX(), getY(),
-				this, target, getProjectileSpeed(), getDamage(), getElement(),
-				showSplash);
+				this, target, stats.getProjectileSpeed(), stats.getDamage(),
+				getElement(), showSplash);
 
 		switch (getElement()) {
 		case LIFE:
@@ -291,80 +267,73 @@ public class Tower extends DrawableObject {
 		case EARTH:
 		case FIRESTORM:
 			ret = new ProjectileBlast(getData(), getX(), getY(), this,
-					getDamage(), getElement(), getRange(), showSplash);
+					stats.getDamage(), getElement(), stats.getRange(),
+					showSplash);
 			break;
 
 		case ZENITHTIDE:
 			ret = new ProjectilePierce(getData(), getX(), getY(), this, target,
-					getProjectileSpeed(), getDamage(), element, false,
-					getRange(), 0.5, 0.5);
+					stats.getProjectileSpeed(), stats.getDamage(), element,
+					false, stats.getRange(), 0.5, 0.5);
 			ret.setAlpha((float) (Math.random()));
 			break;
 
 		case ENDSTORM:
 			ret = new ProjectileAura(getData(), getX(), getY(), this,
-					getDamage(), getElement());
+					stats.getDamage(), getElement());
 			break;
 
 		case BIOMASS:
-			if (chargesAvaliable > 0) {
+			if (stats.chargesAvaliable(BIOMASS_CHARGEUSE)) {
 				ret = new ProjectilePierce(getData(), getX(), getY(), this,
-						target, getProjectileSpeed(), getDamage() * 10,
-						element, false, getRange(), 0.5, 0);
-				chargesAvaliable -= 4 - getGear();
+						target, stats.getProjectileSpeed(),
+						stats.getDamage() * 10, element, false,
+						stats.getRange(), 0.5, 0);
+				stats.useTokens(BIOMASS_CHARGEUSE);
 			} else {
-				if (charge >= maxCharge) {
-					chargesAvaliable = maxCharge;
-					charge = 0;
-				} else {
-					charge++;
-					ret = new ProjectileSuck(getData(), target, this, this,
-							getProjectileSpeed(), getDamage(), element);
-				}
+				stats.incrementCharge();
+				ret = new ProjectileSuck(getData(), target, this, this,
+						stats.getProjectileSpeed(), stats.getDamage(), element);
 			}
 			break;
 
 		case PLASMA:
-			if (chargesAvaliable > 0) {
+			if (stats.chargesAvaliable(PLASMA_CHARGEUSE)) {
 				ret = new ProjectileBlast(getData(), getX(), getY(), this,
-						getDamage(), getElement(), getRange(), showSplash,
-						"projectiles/earth");
-				chargesAvaliable -= 20;
+						stats.getDamage(), getElement(), stats.getRange(),
+						showSplash, "projectiles/earth");
+				stats.useTokens(PLASMA_CHARGEUSE);
 			} else {
-				if (charge >= maxCharge) {
-					chargesAvaliable = maxCharge;
-					charge = 0;
-				} else {
-					charge += 5;
-					ret = new ProjectileSuck(getData(), target, this, this,
-							getProjectileSpeed(), getDamage(), element);
-				}
+				stats.incrementCharge();
+				ret = new ProjectileSuck(getData(), target, this, this,
+						stats.getProjectileSpeed(), stats.getDamage(), element);
 			}
 			break;
 
 		case RAIN:
 
 			double angle = Math.random() * Math.PI * 2;
-			double radius = Math.random() * getRange() + Math.random()
-					* getRange() / 2;
+			double radius = Math.random() * stats.getRange() + Math.random()
+					* stats.getRange() / 2;
 			double xxx = Math.cos(angle) * radius;
 			double yyy = Math.sin(angle) * radius;
 
 			ret = new ProjectilePoint(getData(), getX() + xxx - 20, getY()
-					+ yyy - 40, this, getDamage(), getElement(), 5, new Point(
-					(int) (getX() + xxx), (int) (getY() + yyy)));
+					+ yyy - 40, this, stats.getDamage(), getElement(), 5,
+					new Point((int) (getX() + xxx), (int) (getY() + yyy)));
 			break;
 
 		case BLAZE:
 		case INFERNO:
 			ret = new ProjectileBomb(getData(), getX(), getY(), this, tar,
-					getProjectileSpeed(), getDamage(), getElement(), showSplash);
+					stats.getProjectileSpeed(), stats.getDamage(),
+					getElement(), showSplash);
 			break;
 
 		case TORRENT:
 			ret = new ProjectilePierce(getData(), getX(), getY(), this, target,
-					getProjectileSpeed(), getDamage(), element, true,
-					getRange(), 0.5, Math.random() * .5);
+					stats.getProjectileSpeed(), stats.getDamage(), element,
+					true, stats.getRange(), 0.5, Math.random() * .5);
 			ret.setAlpha((float) Math.random());
 			ret.addX(Math.random() * ret.getWidth() - ret.getWidth() / 2);
 			ret.addY(Math.random() * ret.getHeight() - ret.getHeight() / 2);
@@ -377,14 +346,14 @@ public class Tower extends DrawableObject {
 		default:
 		}
 
-		if (bounceNumber != 0 && bounceRange != 0) {
-			ret.setBounce(bounceNumber, bounceRange);
+		if (stats.getBounceNumber() != 0 && stats.getBounceRange() != 0) {
+			ret.setBounce(stats.getBounceNumber(), stats.getBounceRange());
 		}
-		if (getSlowAmmount() != 0 && getSlowDuration() != 0) {
-			ret.setSlow(getSlowAmmount() / 100, getSlowDuration());
+		if (stats.getSlowAmmount() != 0 && stats.getSlowDuration() != 0) {
+			ret.setSlow(stats.getSlowAmmount() / 100, stats.getSlowDuration());
 		}
-		if (burnDuration != 0 && burnDamage != 0) {
-			ret.setBurn(burnDamage, burnDuration);
+		if (stats.getBurnDuration() != 0 && stats.getBurnDamage() != 0) {
+			ret.setBurn(stats.getBurnDamage(), stats.getBurnDuration());
 		}
 		return ret;
 
@@ -392,7 +361,7 @@ public class Tower extends DrawableObject {
 
 	public String getStringToDrawWhenMouseOver() {
 		String s1 = "    ";
-		switch (gear) {
+		switch (stats.getGear()) {
 		case 2:
 			s1 = " II ";
 			break;
@@ -412,86 +381,16 @@ public class Tower extends DrawableObject {
 
 		}
 
-		return element.name + s1 + "   Dmg:" + getDamage() + "   Range: "
-				+ getRange() + "   Exp: " + exp + s2;
+		return element.name + s1 + "   Dmg:" + stats.getDamage() + "   Range: "
+				+ stats.getRange() + "   Exp: " + stats.getExp() + s2;
 	};
-
-	public double getMaxReload() {
-		return maxReload;
-	}
 
 	public boolean mouseOn() {
 		return mouseOnMe;
 	}
 
-	public void showRange(boolean b) {
+	public void setMouseOnMe(boolean b) {
 		mouseOnMe = b;
-	}
-
-	public void decrementReload() {
-		setReload(Math.max(0, getReload() - 1));
-	}
-
-	/*
-	 * STATS AFFECTED BY BUFFS
-	 */
-
-	public double getRange() {
-		double ret = range;
-		if (buffs.get(AuraType.RANGE) != null)
-			for (Aura aura : buffs.get(AuraType.RANGE)) {
-				if (ret > 0)
-					ret += aura.getAmmount();
-			}
-		return ret + ret * (.1 * gear - .1);
-	}
-
-	public double getProjectileSpeed() {
-		double ret = projectileSpeed;
-		if (buffs.get(AuraType.PROJECTILE_SPEED) != null)
-			for (Aura aura : buffs.get(AuraType.PROJECTILE_SPEED)) {
-				ret += aura.getAmmount();
-			}
-		return ret;
-	}
-
-	public double getSlowAmmount() {
-		double ret = slowAmmount;
-		if (buffs.get(AuraType.SLOW_AMMOUNT) != null)
-			for (Aura aura : buffs.get(AuraType.SLOW_AMMOUNT)) {
-				if (aura.getAmmount() > ret) {
-					ret = aura.getAmmount();
-				}
-			}
-		return ret;
-	}
-
-	public int getSlowDuration() {
-		int ret = slowDuration;
-		if (buffs.get(AuraType.SLOW_DURATION) != null)
-			for (Aura aura : buffs.get(AuraType.SLOW_DURATION)) {
-				ret += aura.getAmmount();
-			}
-		return ret;
-	}
-
-	public int getRedo() {
-		int ret = redo;
-		if (buffs.get(AuraType.REDO) != null)
-			for (Aura aura : buffs.get(AuraType.REDO)) {
-				ret += aura.getAmmount();
-			}
-
-		return ret;
-	}
-
-	public double getDamage() {
-		double ret = damage;
-		if (buffs.get(AuraType.DAMAGE) != null)
-			for (Aura aura : buffs.get(AuraType.DAMAGE)) {
-				ret += damage * aura.getAmmount() / 100;
-			}
-		return ret * gear;
 	}
 
 	/*
@@ -500,22 +399,6 @@ public class Tower extends DrawableObject {
 
 	public Elemento getElement() {
 		return element;
-	}
-
-	public int getExp() {
-		return exp;
-	}
-
-	public void addExp(int i) {
-		exp += i;
-	}
-
-	public double getReload() {
-		return reload;
-	}
-
-	public void setReload(double d) {
-		reload = d;
 	}
 
 	public void upgrade(final Elemento new_ele) {
@@ -530,12 +413,11 @@ public class Tower extends DrawableObject {
 				getData().showErrorMessage("LIFE TOTEM CAN NOT BE UPGRADED");
 				return;
 			}
-			// if (gear < 3) {
-			gear++;
+			stats.nextGear();
 			getData().addDrawableObject(
 					new SplashText(getData(), getData().getMouse().x, getData()
-							.getMouse().y, "Totem Gear Raised to " + gear,
-							false, Data.COLOR_WHITE));
+							.getMouse().y, "Totem Gear Raised to "
+							+ stats.getGear(), false, Data.COLOR_WHITE));
 			getData().addShards(-Elemento.LIFE.getCost());
 			return;
 
@@ -559,7 +441,7 @@ public class Tower extends DrawableObject {
 		}
 
 		getData().addShards(-newElement.getCost());
-		getSpecs(newElement);
+		setStats(newElement);
 		getData().addDrawableObject(
 				new SplashText(getData(), getData().getMouse().x, getData()
 						.getMouse().y, newElement.name + " created", false,
@@ -572,11 +454,11 @@ public class Tower extends DrawableObject {
 	}
 
 	public void updateBuffs(final LinkedList<Tower> list) {
-		buffs.clear();
+		stats.clearBuffs();
 		links.clear();
 		for (int i = 0; i < AuraType.values().length; i++) {
 			AuraType type = AuraType.values()[i];
-			buffs.put(type, new LinkedList<Aura>());
+			stats.putBuff(type, new LinkedList<Aura>());
 		}
 		for (Tower tower : list) {
 			if (tower.getId() != getId())
@@ -585,7 +467,8 @@ public class Tower extends DrawableObject {
 					if (tower.getAura(type) != null) {
 						if (Auxi.point_distance(tower.getX(), tower.getY(),
 								getX(), getY()) <= Data.AURA_RADIUS) {
-							buffs.get(type).add(new Aura(tower.getAura(type)));
+							stats.getBuff(type).add(
+									new Aura(tower.getAura(type)));
 							links.put(
 									tower.getId(),
 									new Point((int) tower.getX(), (int) tower
@@ -598,8 +481,8 @@ public class Tower extends DrawableObject {
 		for (int i = 0; i < AuraType.values().length; i++) {
 			AuraType type = AuraType.values()[i];
 			System.out.print(type + ":");
-			if (buffs.get(type) != null)
-				for (Aura a : buffs.get(type)) {
+			if (stats.getBuff(type) != null)
+				for (Aura a : stats.getBuff(type)) {
 					System.out.print(a.getAmmount() + ", ");
 				}
 		}
@@ -634,24 +517,8 @@ public class Tower extends DrawableObject {
 		}
 	}
 
-	public int getCharge() {
-		return charge;
-	}
-
-	public int getMaxCharge() {
-		return maxCharge;
-	}
-
-	public int getChargesAvaliable() {
-		return chargesAvaliable;
-	}
-
 	public HashMap<Long, Point> getLinks() {
 		return links;
-	}
-
-	public int getGear() {
-		return gear;
 	}
 
 	public void sell() {
@@ -674,4 +541,5 @@ public class Tower extends DrawableObject {
 		}
 		remove();
 	}
+
 }

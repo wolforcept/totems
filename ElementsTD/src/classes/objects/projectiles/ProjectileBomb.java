@@ -30,14 +30,9 @@ public class ProjectileBomb extends ProjectileParent {
 			remove();
 		} else if (Auxi.point_distance(getX(), getY(), tar.getX(), tar.getY()) <= getSpeed()) {
 
-			tar.hurt(getFather(), getDamage(), getElement(), showSplash);
-
-			if (isSlower()) {
-				tar.reduceSpeed(getSlowDuration(), getSlowAmmount());
-			}
-			if (isBurner()) {
-				tar.setOnFire(getBurnDuration(), getBurnDamage());
-			}
+			tar.hurt(getFather(), getDamage(), getElement(), showSplash,
+					getSlowDuration(), getSlowAmmount(), getBurnDuration(),
+					getBurnDamage());
 
 			// PARTICLES:
 			switch (getElement()) {

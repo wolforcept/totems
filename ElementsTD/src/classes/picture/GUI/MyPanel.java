@@ -115,34 +115,33 @@ public class MyPanel extends JPanel {
 			for (Tower t : data.getTowerListClone()) {
 				drawImage(t, g);
 
-				if (t.getMaxReload() > 10) {
+				if (t.stats.getMaxReload() > 10) {
 					g.setColor(Data.COLOR_RELOAD_BAR);
 					g.fillRect((int) t.getX1(), (int) (t.getY1() + t
 							.getHeight()),
-							(int) (t.getReload() * t.getWidth() / t
+							(int) (t.stats.getReload() * t.getWidth() / t.stats
 									.getMaxReload()), 2);
 				}
-				if (t.getChargesAvaliable() > 0) {
+				if (t.stats.chargesAvaliable()) {
 					g.setColor(Data.COLOR_CHARGED_BAR);
 					g.fillRect((int) t.getX1(), (int) (t.getY1() - 2 + t
-							.getHeight()),
-							(int) (t.getChargesAvaliable() * t.getWidth() / t
-									.getMaxCharge()), 2);
-				} else if (t.getCharge() > 0) {
+							.getHeight()), (int) (t.stats.getChargesAvaliable()
+							* t.getWidth() / t.stats.getMaxCharge()), 2);
+				} else if (t.stats.hasCharge()) {
 					g.setColor(Data.COLOR_CHARGING_BAR);
 					g.fillRect((int) t.getX1(), (int) (t.getY1() - 2 + t
 							.getHeight()),
-							(int) (t.getCharge() * t.getWidth() / t
+							(int) (t.stats.getCharge() * t.getWidth() / t.stats
 									.getMaxCharge()), 2);
 
 				}
 				if (t.mouseOn()) {
-					if (t.getRange() > 0) {
+					if (t.stats.getRange() > 0) {
 						g.setColor(Data.COLOR_RANGE);
-						g.drawOval((int) (t.getX() - t.getRange()),
-								(int) (t.getY() - t.getRange()),
-								(int) (t.getRange() * 2),
-								(int) (t.getRange() * 2));
+						g.drawOval((int) (t.getX() - t.stats.getRange()),
+								(int) (t.getY() - t.stats.getRange()),
+								(int) (t.stats.getRange() * 2),
+								(int) (t.stats.getRange() * 2));
 					}
 
 				}

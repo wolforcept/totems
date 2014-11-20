@@ -42,13 +42,9 @@ public class ProjectileBlast extends ProjectileParent {
 			for (Enemy e : getData().getEnemyListClone()) {
 				if (radius > Auxi.point_distance(e.getX(), e.getY(), getX(),
 						getY())) {
-					e.hurt(getFather(), getDamage(), getElement(), showSplash);
-					if (isSlower()) {
-						e.reduceSpeed(getSlowDuration(), getSlowAmmount());
-					}
-					if (isBurner()) {
-						e.setOnFire(getBurnDuration(), getBurnDamage());
-					}
+					e.hurt(getFather(), getDamage(), getElement(), showSplash,
+							getSlowDuration(), getSlowAmmount(),
+							getBurnDuration(), getBurnDamage());
 				}
 			}
 			remove();

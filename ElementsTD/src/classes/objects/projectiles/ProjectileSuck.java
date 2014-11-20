@@ -16,7 +16,9 @@ public class ProjectileSuck extends ProjectileParent {
 		addX(tar.getWidth() * 0.25 - 0.5 * Math.random() * tar.getWidth());
 		addY(tar.getHeight() * 0.25 - 0.5 * Math.random() * tar.getHeight());
 		dir = Auxi.point_direction(getX(), getY(), tower.getX(), tower.getY());
-		tar.hurt(getFather(), getDamage(), getElement(), false);
+		tar.hurt(getFather(), getDamage(), getElement(), false,
+				getSlowDuration(), getSlowAmmount(), getBurnDuration(),
+				getBurnDamage());
 	}
 
 	@Override
