@@ -33,7 +33,7 @@ public class Data {
 	// STATIC
 
 	private static final double STARTING_HEALTH = 25,
-			STARTING_HEALTH_GAIN = 0.4, HEALTH_GAIN_INCREMENT = 0.0015;
+			STARTING_HEALTH_GAIN = 0.6, HEALTH_GAIN_INCREMENT = 0.0001;
 	private static final int STARTING_REWARD = 1, REWARD_INCREMENT = 2;
 	private static HashMap<String, Animation> imageMap;
 	public static final float SELLING_REFUND = .75f;
@@ -82,6 +82,7 @@ public class Data {
 
 		// towers tier 1
 		getTowerDrawableImage(50, 0.75, "life", true);
+		getTowerDrawableImage(77, 0.75, "seed", true);
 		getTowerDrawableImage(50, 0.75, "wind", true); // A
 		getTowerDrawableImage(100, 0.75, "fire", true); // F
 		getTowerDrawableImage(35, 0.50, "water", true); // W
@@ -689,5 +690,23 @@ public class Data {
 
 	public void showErrorMessage(String string) {
 		showMessage(string, false, Data.COLOR_RED);
+	}
+
+	public boolean isPathMarkAt(Point p) {
+		for (PathMark pm : getPathMarkListClone()) {
+			if (Auxi.collides(p, pm)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isTowerAt(Point p) {
+		for (Tower t : getTowerListClone()) {
+			if (Auxi.collides(p, t)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

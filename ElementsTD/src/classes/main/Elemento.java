@@ -5,6 +5,7 @@ import classes.objects.Tower.TargetType;
 public enum Elemento {
 	
 //	ENUM			CODE	NAME					RANGE	RELOAD	SPEED	DMG		REDO	TARGET TYPE				TRGT LOCK	SPLASH		SLOW	DUR		BURN	DUR		BNCS	RNG
+	SEED(			"000",	"Seed of Totem",		0,		0,		0.0,	0,		0,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),
 	LIFE(			"000",	"Totem of Life",		0,		0,		0.0,	0,		0,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		0,		0),
 	WIND(			"A00",	"Totem of Wind",		128,	60,		3.0, 	10.0, 	1,		TargetType.RANDOM,		true,		true,		0,		0,		0,		0,		3,		100),
 	FIRE(			"F00",	"Fire Totem",			128, 	120, 	10.0, 	0.0, 	1,		TargetType.BURN,		false,		false,		0,		0,		0.1,	200,	0,		0),
@@ -128,7 +129,7 @@ public enum Elemento {
 		int cost = -1;
 		switch (c) {
 		case 'A':
-			cost = 20;
+			cost = 5;
 			break;
 
 		case 'W':
@@ -136,14 +137,11 @@ public enum Elemento {
 			break;
 
 		case 'E':
-			cost = 25;
+			cost = 15;
 			break;
 
 		case 'F':
-			cost = 15;
-			break;
-		case 'L':
-			cost = 5;
+			cost = 10;
 			break;
 
 		case '0':

@@ -58,7 +58,7 @@ public class Enemy extends DrawableObject {
 	}
 
 	public void addResistance(Elemento e, double resistAmount) {
-		resists[e.getId() - 1] = resistAmount;
+		resists[e.getId() - 2] = resistAmount;
 	}
 
 	public double getHealth() {
@@ -260,8 +260,9 @@ public class Enemy extends DrawableObject {
 	 *            in %
 	 */
 	private void reduceSpeed(int slowDuration, double ammount) {
-		reducedSpeedDuration = slowDuration;
-		reducedSpeed = speed * ammount;
+		reducedSpeedDuration = Math.max(reducedSpeedDuration, slowDuration);
+		if (speed * ammount < reducedSpeed)
+			reducedSpeed = speed * ammount;
 	}
 
 	public double getSpeed() {

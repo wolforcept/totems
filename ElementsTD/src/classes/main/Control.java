@@ -238,8 +238,7 @@ public class Control extends Thread {
 
 					if (towerAtMouse == null) {
 
-						if (selectedElement == Elemento.LIFE
-								&& Elemento.LIFE.getCost() <= data.getShards()) {
+						if (selectedElement == Elemento.LIFE) {
 
 							Tower toAdd = new Tower(
 									data,//
@@ -251,21 +250,10 @@ public class Control extends Thread {
 											* (int) Math.round(data.getMouse().y / 32)
 											+ (data.getSelectedElement()
 													.getSize() / 2), //
-									data.getSelectedElement());
+									Elemento.SEED);
 
-							boolean positionFree = true;
-							for (Tower t : data.getTowerListClone()) {
-								if (Auxi.collides(t, toAdd)) {
-									positionFree = false;
-								}
-							}
-							for (PathMark p : data.getPathMarkListClone()) {
-								if (Auxi.collides(p, toAdd)) {
-									positionFree = false;
-								}
-							}
-
-							if (positionFree) {
+							if (!data.isPathMarkAt(toAdd.getPos())
+									&& !data.isTowerAt(toAdd.getPos())) {
 								data.addDrawableObject(toAdd);
 								data.addDrawableObject(new SplashAnimation(
 										data, toAdd.getX() - 32,

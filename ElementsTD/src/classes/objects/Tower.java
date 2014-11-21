@@ -259,6 +259,7 @@ public class Tower extends DrawableObject {
 				getElement(), showSplash);
 
 		switch (getElement()) {
+		case SEED:
 		case LIFE:
 		case MUD:
 			ret = null;

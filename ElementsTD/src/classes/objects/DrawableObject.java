@@ -66,6 +66,10 @@ public abstract class DrawableObject {
 		return y - size.height / 2;
 	}
 
+	public Point getPos() {
+		return new Point((int) x, (int) y);
+	}
+
 	public void addX(double xx) {
 		x += xx;
 	}
